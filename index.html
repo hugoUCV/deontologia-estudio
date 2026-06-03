@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deontología — Guía de Estudio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #1F4E79;
+    --blue: #2E75B6;
+    --blue-light: #DEEAF1;
+    --blue-mid: #BDD7EE;
+    --b1: #2563EB;
+    --b2: #7C3AED;
+    --b3: #059669;
+    --yellow: #D97706;
+    --yellow-bg: #FFFBEB;
+    --yellow-border: #FCD34D;
+    --success: #10B981;
+    --error: #EF4444;
+    --bg: #F1F5F9;
+    --card: #FFFFFF;
+    --text: #1E293B;
+    --text-muted: #64748B;
+    --border: #E2E8F0;
+    --radius: 14px;
+    --shadow: 0 4px 20px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,.12);
+  }
+
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* NAV */
+  nav {
+    background: var(--navy);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,.3);
+    gap: 8px;
+  }
+  .nav-logo { color: white; font-weight: 800; font-size: 16px; margin-right: auto; letter-spacing: -.3px; }
+  .nav-logo span { color: #93C5FD; }
+  .nav-btn {
+    background: none; border: none; color: rgba(255,255,255,.65); cursor: pointer;
+    padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 500;
+    font-family: inherit; transition: all .2s;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,.1); color: white; }
+  .nav-btn.active { background: rgba(255,255,255,.15); color: white; }
+
+  /* VIEWS */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* HOME */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+    color: white; padding: 60px 24px 48px; text-align: center;
+  }
+  .hero h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 800; letter-spacing: -1px; margin-bottom: 10px; }
+  .hero p { font-size: 16px; opacity: .8; max-width: 500px; margin: 0 auto 32px; }
+  .hero-stats {
+    display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+  }
+  .hero-stat {
+    background: rgba(255,255,255,.15); backdrop-filter: blur(8px);
+    border-radius: 12px; padding: 14px 24px;
+  }
+  .hero-stat .num { font-size: 28px; font-weight: 800; display: block; }
+  .hero-stat .lbl { font-size: 11px; opacity: .75; text-transform: uppercase; letter-spacing: 1px; }
+
+  .home-content { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+  .home-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 32px; }
+
+  .block-card {
+    background: var(--card); border-radius: var(--radius); padding: 24px;
+    box-shadow: var(--shadow); border-left: 5px solid var(--color);
+    cursor: pointer; transition: all .2s;
+  }
+  .block-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+  .block-card .bc-num { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color); margin-bottom: 8px; }
+  .block-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .block-card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+  .block-card .bc-count { margin-top: 14px; font-size: 12px; color: var(--color); font-weight: 600; }
+
+  .home-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--blue); color: white; border: none; padding: 14px 28px;
+    border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer;
+    font-family: inherit; transition: all .2s; flex: 1; min-width: 160px;
+  }
+  .btn-primary:hover { background: var(--navy); transform: translateY(-1px); }
+  .btn-outline {
+    background: var(--card); color: var(--blue); border: 2px solid var(--blue);
+    padding: 12px 28px; border-radius: 10px; font-size: 15px; font-weight: 600;
+    cursor: pointer; font-family: inherit; transition: all .2s; flex: 1; min-width: 160px;
+  }
+  .btn-outline:hover { background: var(--blue); color: white; transform: translateY(-1px); }
+
+  /* STUDY */
+  .study-wrap { max-width: 860px; margin: 0 auto; padding: 32px 20px; }
+  .study-header { margin-bottom: 28px; }
+  .study-header h2 { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
+  .study-header p { color: var(--text-muted); font-size: 14px; }
+
+  .block-section { margin-bottom: 32px; }
+  .block-title {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--color); margin-bottom: 12px;
+    padding-bottom: 8px; border-bottom: 2px solid var(--color);
+  }
+  .block-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--color); }
+
+  .q-card {
+    background: var(--card); border-radius: var(--radius); margin-bottom: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06); overflow: hidden; border: 1px solid var(--border);
+    transition: box-shadow .2s;
+  }
+  .q-card:hover { box-shadow: var(--shadow); }
+  .q-header {
+    display: flex; align-items: flex-start; gap: 14px; padding: 18px 20px;
+    cursor: pointer; user-select: none;
+  }
+  .q-num {
+    width: 28px; height: 28px; border-radius: 8px; background: var(--color);
+    color: white; font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+  }
+  .q-text { flex: 1; }
+  .q-text strong { font-size: 15px; font-weight: 600; display: block; margin-bottom: 3px; }
+  .q-text .q-short { font-size: 13px; color: var(--text-muted); }
+  .q-arrow { font-size: 18px; color: var(--text-muted); transition: transform .3s; flex-shrink: 0; margin-top: 4px; }
+  .q-card.open .q-arrow { transform: rotate(180deg); }
+
+  .q-body {
+    display: none; padding: 0 20px 20px 62px;
+  }
+  .q-card.open .q-body { display: block; }
+  .q-answer {
+    font-size: 14px; line-height: 1.7; color: var(--text);
+    background: #F8FAFC; border-radius: 10px; padding: 16px;
+    border-left: 4px solid var(--color); margin-bottom: 12px;
+  }
+  .key-points { display: flex; flex-wrap: wrap; gap: 6px; }
+  .kp-tag {
+    background: var(--color); color: white; font-size: 11px; font-weight: 600;
+    padding: 4px 10px; border-radius: 20px; opacity: .85;
+  }
+
+  .nota-box {
+    background: var(--yellow-bg); border: 1px solid var(--yellow-border);
+    border-radius: 10px; padding: 12px 14px; font-size: 13px;
+    color: #92400E; margin-bottom: 12px; display: flex; gap: 8px; align-items: flex-start;
+  }
+
+  /* TEST */
+  .test-wrap { max-width: 700px; margin: 0 auto; padding: 32px 20px; }
+  .test-progress-bar {
+    height: 6px; background: var(--border); border-radius: 10px; margin-bottom: 28px; overflow: hidden;
+  }
+  .test-progress-fill { height: 100%; background: var(--blue); border-radius: 10px; transition: width .4s; }
+  .test-meta { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+
+  .test-card {
+    background: var(--card); border-radius: var(--radius); padding: 32px;
+    box-shadow: var(--shadow); border: 1px solid var(--border); min-height: 320px;
+  }
+  .test-q { font-size: 18px; font-weight: 700; line-height: 1.5; margin-bottom: 28px; }
+  .test-options { display: flex; flex-direction: column; gap: 10px; }
+  .test-opt {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--bg); border: 2px solid var(--border); border-radius: 10px;
+    padding: 14px 18px; cursor: pointer; font-size: 14px; font-weight: 500;
+    transition: all .15s; text-align: left; font-family: inherit; color: var(--text);
+  }
+  .test-opt:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-light); }
+  .test-opt.correct { border-color: var(--success); background: #ECFDF5; color: #065F46; }
+  .test-opt.wrong { border-color: var(--error); background: #FEF2F2; color: #991B1B; }
+  .test-opt:disabled { cursor: default; }
+  .opt-letter {
+    width: 28px; height: 28px; border-radius: 8px; background: var(--border);
+    color: var(--text-muted); font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .correct .opt-letter { background: var(--success); color: white; }
+  .wrong .opt-letter { background: var(--error); color: white; }
+
+  .test-feedback {
+    margin-top: 20px; padding: 14px; border-radius: 10px;
+    font-size: 14px; font-weight: 500; display: none;
+  }
+  .test-feedback.show { display: block; }
+  .test-feedback.ok { background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; }
+  .test-feedback.fail { background: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; }
+
+  .test-next {
+    margin-top: 20px; background: var(--blue); color: white; border: none;
+    padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: inherit; display: none;
+  }
+  .test-next.show { display: inline-block; }
+  .test-next:hover { background: var(--navy); }
+
+  /* RESULT */
+  .result-card {
+    background: var(--card); border-radius: var(--radius); padding: 40px;
+    box-shadow: var(--shadow); text-align: center;
+  }
+  .result-score { font-size: 64px; font-weight: 800; color: var(--blue); line-height: 1; margin-bottom: 8px; }
+  .result-label { font-size: 16px; color: var(--text-muted); margin-bottom: 24px; }
+  .result-msg { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .result-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 32px; }
+  .result-wrong { text-align: left; margin-bottom: 32px; }
+  .result-wrong h4 { font-size: 14px; font-weight: 700; color: var(--error); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .5px; }
+  .wrong-item { background: #FEF2F2; border: 1px solid #FECACA; border-radius: 10px; padding: 14px; margin-bottom: 8px; font-size: 13px; }
+  .wrong-item .wi-q { font-weight: 600; margin-bottom: 6px; }
+  .wrong-item .wi-correct { color: var(--success); font-weight: 600; }
+  .wrong-item .wi-mine { color: var(--error); }
+
+  /* DESARROLLO */
+  .dev-wrap { max-width: 760px; margin: 0 auto; padding: 32px 20px; }
+  .dev-header { margin-bottom: 28px; }
+  .dev-header h2 { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
+  .dev-header p { color: var(--text-muted); font-size: 14px; }
+  .dev-selector { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px; }
+  .dev-pill {
+    background: var(--card); border: 2px solid var(--border); border-radius: 20px;
+    padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: inherit; color: var(--text-muted); transition: all .2s;
+  }
+  .dev-pill.active { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+
+  .dev-card { background: var(--card); border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow); }
+  .dev-badge { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--blue); margin-bottom: 12px; }
+  .dev-question { font-size: 20px; font-weight: 700; line-height: 1.4; margin-bottom: 24px; color: var(--text); }
+  .dev-hint { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; background: var(--bg); padding: 12px; border-radius: 8px; }
+  .dev-hint span { font-weight: 600; color: var(--text); }
+
+  .btn-reveal {
+    background: var(--navy); color: white; border: none; padding: 14px 28px;
+    border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer;
+    font-family: inherit; transition: all .2s; width: 100%;
+  }
+  .btn-reveal:hover { background: var(--blue); }
+
+  .dev-answer { display: none; margin-top: 24px; }
+  .dev-answer.visible { display: block; }
+  .dev-answer-box {
+    background: #F0F9FF; border: 1px solid #BAE6FD; border-radius: 12px;
+    padding: 20px; font-size: 14px; line-height: 1.8; margin-bottom: 16px;
+  }
+  .dev-answer-box h4 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--blue); margin-bottom: 10px; }
+  .dev-answer-box p { margin-bottom: 10px; }
+  .dev-answer-box ul { padding-left: 20px; }
+  .dev-answer-box li { margin-bottom: 6px; }
+
+  .rating-section { margin-top: 20px; }
+  .rating-section p { font-size: 14px; font-weight: 600; margin-bottom: 12px; color: var(--text); }
+  .rating-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+  .rating-btn {
+    flex: 1; min-width: 120px; border: none; border-radius: 10px; padding: 12px;
+    font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all .2s;
+  }
+  .rating-btn.green { background: #ECFDF5; color: #065F46; border: 2px solid #A7F3D0; }
+  .rating-btn.green:hover { background: #A7F3D0; }
+  .rating-btn.yellow { background: #FFFBEB; color: #92400E; border: 2px solid #FCD34D; }
+  .rating-btn.yellow:hover { background: #FCD34D; }
+  .rating-btn.red { background: #FEF2F2; color: #991B1B; border: 2px solid #FECACA; }
+  .rating-btn.red:hover { background: #FECACA; }
+
+  .dev-nav { display: flex; justify-content: space-between; margin-top: 20px; gap: 10px; }
+  .btn-nav {
+    background: var(--card); border: 2px solid var(--border); color: var(--text);
+    padding: 10px 20px; border-radius: 10px; font-size: 13px; font-weight: 600;
+    cursor: pointer; font-family: inherit; transition: all .2s;
+  }
+  .btn-nav:hover { border-color: var(--blue); color: var(--blue); }
+  .btn-nav:disabled { opacity: .4; cursor: default; }
+
+  .confetti-msg {
+    background: linear-gradient(135deg, #ECFDF5, #D1FAE5);
+    border: 1px solid #A7F3D0; border-radius: 10px; padding: 14px;
+    text-align: center; font-size: 15px; font-weight: 600; color: #065F46;
+    margin-top: 16px; display: none;
+  }
+  .confetti-msg.show { display: block; }
+
+  @media (max-width: 600px) {
+    .hero { padding: 40px 16px 32px; }
+    .test-card { padding: 20px; }
+    .dev-card { padding: 20px; }
+    .nav-logo { font-size: 14px; }
+    .nav-btn { padding: 8px 10px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Deonto<span>logía</span></div>
+  <button class="nav-btn active" onclick="showView('home')">Inicio</button>
+  <button class="nav-btn" onclick="showView('study')">Estudiar</button>
+  <button class="nav-btn" onclick="showView('test')">Test</button>
+  <button class="nav-btn" onclick="showView('dev')">Desarrollo</button>
+</nav>
+
+<!-- HOME -->
+<div id="view-home" class="view active">
+  <div class="hero">
+    <h1>Deontología &amp; Moral Social</h1>
+    <p>Guía completa para el examen — 15 preguntas, test de 20 ítems y práctica de desarrollo</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="num">15</span><span class="lbl">Preguntas</span></div>
+      <div class="hero-stat"><span class="num">3</span><span class="lbl">Bloques</span></div>
+      <div class="hero-stat"><span class="num">20</span><span class="lbl">Test items</span></div>
+    </div>
+  </div>
+  <div class="home-content">
+    <div class="home-grid">
+      <div class="block-card" style="--color: #2563EB" onclick="showView('study')">
+        <div class="bc-num">Bloque 1</div>
+        <h3>Doctrina Social de la Iglesia</h3>
+        <p>Qué es la DSI, sus principios, la Rerum Novarum y por qué sirve a todos.</p>
+        <div class="bc-count">5 preguntas</div>
+      </div>
+      <div class="block-card" style="--color: #7C3AED" onclick="showView('study')">
+        <div class="bc-num">Bloque 2</div>
+        <h3>La Persona</h3>
+        <p>Dimensiones de la persona, tipos de dignidad humana y objeción de conciencia.</p>
+        <div class="bc-count">3 preguntas</div>
+      </div>
+      <div class="block-card" style="--color: #059669" onclick="showView('study')">
+        <div class="bc-num">Bloque 3</div>
+        <h3>Temas Sociales y Profesionales</h3>
+        <p>Cooperación internacional, guerra justa, DDHH, trabajo, comunidad política y deontología.</p>
+        <div class="bc-count">7 preguntas</div>
+      </div>
+    </div>
+    <div class="nota-box">
+      <span style="font-size:16px">⚠</span>
+      <div><strong>Candidatas a pregunta larga:</strong> P.3 (6 principios DSI) · P.7 (4 tipos de dignidad) · P.6 (6 dimensiones de la persona). El año de la <em>Rerum Novarum</em> es <strong>1891</strong>, no 1892.</div>
+    </div>
+    <div class="home-actions">
+      <button class="btn-primary" onclick="showView('study')">Estudiar el temario</button>
+      <button class="btn-primary" onclick="startTest()">Hacer el test</button>
+      <button class="btn-outline" onclick="showView('dev')">Practicar desarrollo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ESTUDIAR -->
+<div id="view-study" class="view">
+  <div class="study-wrap">
+    <div class="study-header">
+      <h2>Todas las preguntas</h2>
+      <p>Haz clic en cada pregunta para ver la respuesta completa.</p>
+    </div>
+    <div id="study-content"></div>
+  </div>
+</div>
+
+<!-- TEST -->
+<div id="view-test" class="view">
+  <div class="test-wrap">
+    <div class="test-meta">
+      <span id="test-counter">Pregunta 1 de 20</span>
+      <span id="test-score-live">Aciertos: 0</span>
+    </div>
+    <div class="test-progress-bar"><div class="test-progress-fill" id="test-bar" style="width:0%"></div></div>
+    <div id="test-area"></div>
+  </div>
+</div>
+
+<!-- DESARROLLO -->
+<div id="view-dev" class="view">
+  <div class="dev-wrap">
+    <div class="dev-header">
+      <h2>Práctica de desarrollo</h2>
+      <p>Piensa la respuesta, luego revelarla y valora cuánto sabías.</p>
+    </div>
+    <div class="dev-selector" id="dev-pills"></div>
+    <div id="dev-card-area"></div>
+  </div>
+</div>
+
+<script>
+// ─── DATA ────────────────────────────────────────────────────────────────────
+
+const blocks = [
+  {
+    id: 1, name: "Doctrina Social de la Iglesia", color: "#2563EB",
+    questions: [
+      {
+        id: 1, q: "¿Qué es la doctrina social de la Iglesia?",
+        short: "No es ideología. Enseñanza moral ante los problemas sociales desde la revolución industrial.",
+        answer: "La DSI no es una propuesta política, económica ni una ideología intermedia entre sistemas. Es el estudio de las implicaciones éticas de los proyectos políticos y económicos, formulado como enseñanza moral de la Iglesia en respuesta a los problemas sociales surgidos desde la revolución industrial. Constituye parte integrante del ministerio evangelizador, porque está orientada a iluminar la vida social con el Evangelio y a ayudar a que los comportamientos y las estructuras respeten la dignidad humana y la ley moral.",
+        keys: ["No es ideología ni propuesta política", "Enseñanza moral ante la cuestión social", "Surge con la revolución industrial", "Parte del ministerio evangelizador"]
+      },
+      {
+        id: 2, q: "¿Para qué sirve la doctrina social de la Iglesia?",
+        short: "Orientar la acción para transformar estructuras a la luz de la justicia y la caridad.",
+        answer: "La DSI está dirigida a los católicos y a todas las personas de buena voluntad. Su finalidad es orientar la acción de los cristianos y de quienes se sienten interpelados por sus enseñanzas para que las estructuras económicas, políticas y culturales sean transformadas a la luz de la justicia y la caridad. No es un sistema cerrado, sino una invitación a la acción: ilumina problemas, estimula la lucha por la justicia y propone criterios teóricos, históricos y prácticos para denunciar las injusticias, anunciar el bien y promover soluciones concretas.",
+        keys: ["Orientar la acción de todos", "Transformar estructuras injustas", "No es sistema cerrado: invita a actuar", "Denuncia, anuncia y propone soluciones"]
+      },
+      {
+        id: 3, q: "Principios de la doctrina social de la Iglesia ★ CANDIDATA LARGA",
+        short: "6 principios: dignidad, destino universal de bienes, bien común, subsidiaridad, participación, solidaridad.",
+        answer: "Los seis principios permanentes son el armazón de la enseñanza social católica:\n\n• Dignidad de la persona: toda persona posee un valor intrínseco que fundamenta sus derechos, inalienable e independiente de cualquier circunstancia.\n\n• Destino universal de los bienes: Dios ha destinado la tierra para el beneficio de todos. La propiedad privada es legítima pero subordinada a este derecho común.\n\n• Bien común: conjunto de condiciones sociales que permiten a las personas y grupos alcanzar su plena realización. Las autoridades orientan sus decisiones hacia los más débiles.\n\n• Subsidiaridad: las instancias superiores ayudan a las inferiores sin reemplazarlas, salvaguardando la libertad y la iniciativa de personas y cuerpos intermedios.\n\n• Participación: todos tienen derecho y deber de contribuir a la vida cultural, económica y política de la comunidad.\n\n• Solidaridad: reconoce la interdependencia entre personas y pueblos. Como virtud transforma 'estructuras de pecado' en estructuras de justicia.",
+        keys: ["Dignidad", "Destino universal de bienes", "Bien común", "Subsidiaridad", "Participación", "Solidaridad"],
+        nota: "Memoriza los 6 en orden. En el examen largo tendrás que desarrollar cada uno con su definición."
+      },
+      {
+        id: 4, q: "¿Cuál fue el primer documento dedicado a la doctrina social?",
+        short: "Rerum Novarum, León XIII, 1891. Cuestión obrera durante la revolución industrial.",
+        answer: "El primer documento que abordó de manera explícita la cuestión social fue la encíclica Rerum Novarum, promulgada por el papa León XIII en 1891. Surgió en el contexto de la revolución industrial y de la llamada 'cuestión obrera', cuando la Iglesia percibió la explotación de los trabajadores. El texto defiende la dignidad de los trabajadores, reclama una jornada de trabajo razonable y un salario justo, reconoce el derecho de asociación y sienta las bases para el posterior desarrollo de la doctrina social.",
+        keys: ["Rerum Novarum", "León XIII", "1891 (NO 1892)", "Cuestión obrera", "Salario justo, jornada razonable, derecho de asociación"],
+        nota: "Dato clave: el año es 1891. El error más frecuente es escribir 1892."
+      },
+      {
+        id: 5, q: "¿Por qué las enseñanzas sociales de la Iglesia pueden servir de inspiración a todo ser humano?",
+        short: "Se apoyan en razón y ley natural, no solo en la fe. Sus principios son universalmente compartibles.",
+        answer: "Las enseñanzas sociales de la Iglesia se apoyan en la fe y en la razón y se dirigen a todas las personas. Nacen de un profundo vínculo entre evangelización y promoción humana. Su naturaleza teológico-moral se orienta a la conducta humana y sus fuentes son la Revelación y la ley natural, por lo que proponen principios que pueden ser compartidos por cualquier persona de buena voluntad. Al recordar la dignidad de toda persona y la primacía del bien común y de la justicia, ofrecen criterios éticos universales capaces de inspirar a todos, al margen de su religión, en la construcción de una sociedad más humana y solidaria.",
+        keys: ["Fe + razón + ley natural", "Dirigida a 'personas de buena voluntad'", "Principios universalmente compartibles", "Dignidad y bien común como criterios comunes"]
+      }
+    ]
+  },
+  {
+    id: 2, name: "La Persona", color: "#7C3AED",
+    questions: [
+      {
+        id: 6, q: "Dimensiones o características de la persona ★ CANDIDATA LARGA",
+        short: "6 dimensiones: cuerpo-alma, unicidad, trascendencia, libertad, igual dignidad, sociabilidad.",
+        answer: "La tradición cristiana presenta a la persona como unidad de cuerpo y alma, creada a imagen de Dios, con seis dimensiones:\n\n• Unidad cuerpo-alma: unidad de materia y espíritu; el cuerpo tiene valor y no puede despreciarse.\n\n• Unicidad: cada persona es irrepetible, con historia propia. Un 'yo' capaz de autocomprenderse, autoposeerse y autodeterminarse.\n\n• Trascendencia: capacidad de salir de sí misma para conocer el mundo, relacionarse con los demás y abrirse a Dios.\n\n• Libertad y responsabilidad: libre para dirigirse al bien, orientada por la ley moral natural. La libertad no es absoluta.\n\n• Igual dignidad: todos los seres humanos tienen la misma dignidad independientemente de sexo, raza o condición.\n\n• Sociabilidad: el ser humano es relacional y necesita integrarse y colaborar con los demás sin renunciar a su identidad.",
+        keys: ["Cuerpo y alma", "Unicidad", "Trascendencia", "Libertad y responsabilidad", "Igual dignidad", "Sociabilidad"],
+        nota: "Son exactamente 6 dimensiones. Apréndetelas en este orden para no olvidar ninguna."
+      },
+      {
+        id: 7, q: "La dignidad humana: explica los distintos modos de entenderla ★ CANDIDATA LARGA",
+        short: "4 tipos: ontológica (inalienable), moral (depende de actos), social (pobreza), existencial (sufrimiento).",
+        answer: "La dignidad humana es un valor que corresponde a la persona por el mero hecho de existir. Se distinguen cuatro tipos:\n\n• Ontológica: se basa en que cada persona ha sido querida, creada y amada por Dios. Es INALIENABLE: permanece más allá de cualquier circunstancia y nunca puede ser eliminada.\n\n• Moral: depende del ejercicio de la libertad. Una persona puede degradar su dignidad moral mediante actos contrarios al bien.\n\n• Social: relacionada con las condiciones externas en las que vive la persona, como la pobreza o la marginación.\n\n• Existencial: situaciones en las que la persona vive sin paz, esperanza o alegría (por ejemplo, enfermedad grave) y se siente privada de su valor.\n\nConclusion: la Iglesia insiste en que la dignidad intrínseca (ontológica) es inalienable e independiente de la capacidad de comprender o actuar; los derechos humanos deben protegerse desde la concepción hasta la muerte natural.",
+        keys: ["Ontológica: inalienable (la fundamental)", "Moral: depende de los actos", "Social: condiciones externas", "Existencial: sufrimiento subjetivo"],
+        nota: "La ontológica es la única INALIENABLE. Las otras tres pueden disminuir o perderse."
+      },
+      {
+        id: 8, q: "¿Qué es la objeción de conciencia?",
+        short: "Derecho y deber de negarse a leyes civiles que contradicen la ley moral. El Estado debe reconocerlo.",
+        answer: "La objeción de conciencia es el derecho y el deber de negarse a obedecer leyes civiles cuando estas contradicen la ley moral, los derechos fundamentales de las personas o las enseñanzas del Evangelio. La persona moralmente recta no está obligada a seguir prescripciones legales injustas y, cuando se le exige colaborar en acciones moralmente ilícitas, tiene la obligación de negarse. Este rechazo, además de ser un deber de conciencia, constituye un derecho humano elemental que las leyes civiles deben reconocer y proteger.",
+        keys: ["Derecho Y deber (ambas cosas)", "Negarse a leyes que contradicen la ley moral", "No es arbitraria: responde a principios", "El Estado debe reconocerlo legalmente"]
+      }
+    ]
+  },
+  {
+    id: 3, name: "Temas Sociales y Profesionales", color: "#059669",
+    questions: [
+      {
+        id: 9, q: "¿Qué es la cooperación internacional al desarrollo?",
+        short: "Colaboración entre Estados para garantizar el derecho al desarrollo de todos los pueblos.",
+        answer: "La cooperación internacional para el desarrollo es la colaboración entre comunidades políticas para garantizar el derecho al desarrollo de todos los pueblos. La DSI enseña que el subdesarrollo no es solo fruto de decisiones erróneas, sino también de 'estructuras de pecado': mecanismos económicos, financieros y sociales que impiden el desarrollo. El derecho al desarrollo se funda en: la unidad de origen y destino de la familia humana, la igualdad entre personas y pueblos, el destino universal de los bienes, la integridad del desarrollo, la centralidad de la persona y la solidaridad. La comunidad internacional tiene el deber de eliminar la pobreza, aliviar la deuda externa y promover condiciones para el crecimiento integral y solidario.",
+        keys: ["Estructuras de pecado (mecanismos sistémicos)", "Derecho al desarrollo de todos los pueblos", "6 fundamentos: unidad, igualdad, destino universal...", "Superar: analfabetismo, falta de sanidad, corrupción"]
+      },
+      {
+        id: 10, q: "¿Qué se entiende por guerra justa?",
+        short: "La guerra es un fracaso, pero se admite legítima defensa con 4 condiciones simultáneas.",
+        answer: "La Iglesia considera la guerra como un fracaso de la paz y la condena como medio para resolver conflictos, pero reconoce el derecho a la legítima defensa de los Estados agredidos. Para que el uso de la fuerza sea moralmente lícito deben cumplirse simultáneamente cuatro condiciones:\n\n1. Que el daño causado por el agresor sea duradero, grave y cierto.\n2. Que todos los demás medios para poner fin a la agresión hayan resultado impracticables o ineficaces.\n3. Que existan condiciones serias de éxito.\n4. Que el uso de las armas no produzca males y desórdenes más graves que el mal que se pretende eliminar.\n\nSi falta UNA SOLA condición, el uso de la fuerza no es moralmente lícito.",
+        keys: ["Daño grave y cierto", "Agotados todos los medios pacíficos", "Probabilidad seria de éxito", "Proporcionalidad (males no mayores)", "TODAS simultáneas"],
+        nota: "Si falta UNA SOLA condición, la guerra no es justa. Este matiz suele caer en el examen."
+      },
+      {
+        id: 11, q: "¿Qué son los derechos humanos?",
+        short: "Derechos por el hecho de existir. Universales, inviolables e inalienables.",
+        answer: "Los derechos humanos son los derechos que toda persona posee por el mero hecho de existir. Protegen las necesidades esenciales (vida, alimentación, educación) y la posibilidad de participar en la sociedad y desarrollar el propio potencial. Derivan de la dignidad que pertenece a todos y se consideran universales, inviolables e inalienables. Incluyen el derecho a la vida desde la concepción, a vivir en familia, a trabajar, a fundar una familia y a vivir la propia fe. A cada derecho corresponde un deber en los demás de reconocerlo y respetarlo. Los derechos se extienden también a los pueblos: derecho a existir, a una lengua y cultura propias, a autogobernarse y a vivir en paz.",
+        keys: ["Por el hecho de existir", "Universales, inviolables, inalienables", "A cada derecho corresponde un deber", "Se extienden también a los pueblos"]
+      },
+      {
+        id: 12, q: "Necesidad de una comunidad política y de una autoridad",
+        short: "La comunidad política existe para el bien común. La autoridad es necesaria y limitada por la ley moral.",
+        answer: "El ser humano es social y político por naturaleza. La comunidad política existe para alcanzar un fin que cada persona no puede lograr por sí sola: el crecimiento más pleno de sus miembros, que se concreta en el bien común. El fundamento y el fin de la comunidad política es la persona humana. La autoridad política es necesaria para organizar la convivencia hacia ese bien común, pero no puede suplantar la libre actividad de las personas y los grupos; debe ejercerse dentro de los límites del orden moral y de la ley justa. Cuando el poder político viola gravemente los principios del derecho natural, la DSI reconoce el derecho de resistencia.",
+        keys: ["Comunidad política: para el bien común", "La persona es el fundamento y el fin", "Autoridad necesaria pero limitada por la ley moral", "Derecho de resistencia ante injusticias graves"]
+      },
+      {
+        id: 13, q: "Dimensión objetiva y subjetiva del trabajo",
+        short: "Objetiva: técnicas y actividades (externa). Subjetiva: la persona como sujeto (fundamental).",
+        answer: "La doctrina social distingue dos dimensiones del trabajo:\n\n• Dimensión objetiva: el conjunto de actividades, recursos, instrumentos y técnicas empleadas para producir bienes y servicios. Es la dimensión externa, variable y material.\n\n• Dimensión subjetiva: el actuar de la persona que trabaja como sujeto responsable capaz de realizar diversas acciones que pertenecen al proceso laboral. Es estable y es el FUNDAMENTO último del valor y de la dignidad del trabajo, porque no depende del tipo de actividad realizada, sino de la dignidad del sujeto.\n\nEl reconocimiento de ambas dimensiones evita reducir el trabajo a una mercancía y subraya que el factor humano debe prevalecer sobre el capital.",
+        keys: ["Objetiva: actividades, técnicas, instrumentos (externa, variable)", "Subjetiva: la persona como sujeto (estable, FUNDAMENTAL)", "La subjetiva fundamenta la dignidad del trabajo", "El trabajador prevalece sobre el capital"]
+      },
+      {
+        id: 14, q: "Dignidad del trabajo",
+        short: "El trabajo es para el hombre, no al revés. El valor depende del sujeto, no de lo que produce.",
+        answer: "La dignidad del trabajo brota de la dignidad de la persona que lo realiza. El trabajo, en sentido subjetivo, es la expresión esencial de la persona y por eso su valor no depende de lo que se produce, sino de la dignidad de quien trabaja. El trabajo es para el hombre y no el hombre para el trabajo; el trabajador nunca debe ser considerado una mera mercancía ni un instrumento de producción. Además de servir para el sustento, el trabajo tiene una dimensión social (se realiza con otros y para otros) y debe ser remunerado con equidad. Respetar la dignidad del trabajo implica: primacía del trabajador sobre el capital, participación en los beneficios, condiciones que permitan el desarrollo integral y derecho al descanso.",
+        keys: ["El trabajo es PARA el hombre, no al revés", "El valor no depende de qué se produce", "El trabajador nunca es una mercancía", "Primacía del trabajador sobre el capital", "Derecho al descanso"]
+      },
+      {
+        id: 15, q: "¿Qué es un código deontológico?",
+        short: "Bentham. Ética aplicada a profesiones: normas, infracciones, sanciones.",
+        answer: "La deontología es una teoría ética que regula los deberes y los traduce en preceptos y normas de conducta. El término fue acuñado por Jeremy Bentham y, aplicado al ámbito profesional, constituye una ética aplicada que determina los deberes exigibles a los profesionales en el desempeño de su actividad. Un código deontológico incluye: principios y normas de actuación, un sistema de recepción de consultas y quejas, tipificación de infracciones y un procedimiento de sanciones. Su función: orientar la práctica profesional, proteger a usuarios y clientes, regular la conducta, fortalecer la imagen de la profesión y servir como referencia legal y disciplinaria, complementando la legislación.",
+        keys: ["Acuñado por Jeremy Bentham", "Ética aplicada a una profesión", "Incluye: normas + quejas + infracciones + sanciones", "Protege usuarios, regula conducta, complementa ley"]
+      }
+    ]
+  }
+];
+
+const testQ = [
+  { q: "¿En qué año se promulgó la Rerum Novarum?", opts: ["1891","1892","1900","1848"], ans: 0, exp: "León XIII la promulgó en 1891, no en 1892. Es el dato más típico que se pide." },
+  { q: "¿Quién acuñó el término 'deontología'?", opts: ["Aristóteles","Kant","Jeremy Bentham","Karl Marx"], ans: 2, exp: "Jeremy Bentham acuñó el término para referirse a la ciencia de los deberes." },
+  { q: "¿Cuántos principios permanentes tiene la DSI?", opts: ["4","5","6","7"], ans: 2, exp: "Son 6: dignidad, destino universal de bienes, bien común, subsidiaridad, participación y solidaridad." },
+  { q: "¿Cuál es la dimensión del trabajo considerada fundamental?", opts: ["La objetiva","La material","La productiva","La subjetiva"], ans: 3, exp: "La dimensión subjetiva (la persona como sujeto) es el fundamento de la dignidad del trabajo." },
+  { q: "¿Cuántos tipos de dignidad humana distingue la Iglesia?", opts: ["3","4","5","6"], ans: 1, exp: "Son 4: ontológica, moral, social y existencial." },
+  { q: "¿Qué tipo de dignidad humana es inalienable?", opts: ["Moral","Social","Existencial","Ontológica"], ans: 3, exp: "Solo la ontológica es inalienable: se basa en ser amada por Dios y nunca puede eliminarse." },
+  { q: "¿Cuántas condiciones exige la doctrina de la guerra justa?", opts: ["2","3","4","5"], ans: 2, exp: "Son 4 condiciones: daño grave y cierto, agotados medios pacíficos, probabilidad de éxito y proporcionalidad." },
+  { q: "Las condiciones para que la guerra sea justa deben cumplirse...", opts: ["Solo la primera","Al menos dos","La mayoría de ellas","Todas simultáneamente"], ans: 3, exp: "Si falta UNA SOLA condición, el uso de la fuerza no es moralmente lícito." },
+  { q: "¿Cuántas dimensiones tiene la persona según la tradición cristiana?", opts: ["4","5","6","7"], ans: 2, exp: "Son 6: cuerpo-alma, unicidad, trascendencia, libertad, igual dignidad y sociabilidad." },
+  { q: "El principio de subsidiaridad establece que...", opts: ["El Estado controla a los ciudadanos","Las instancias superiores reemplazan a las inferiores","Las instancias superiores ayudan a las inferiores sin reemplazarlas","La solidaridad prima sobre la libertad"], ans: 2, exp: "Subsidiaridad = ayudar sin reemplazar. Salvaguarda la iniciativa de personas y cuerpos intermedios." },
+  { q: "Los derechos humanos son...", opts: ["Relativos y negociables","Solo para los ciudadanos","Dependientes de la cultura de cada pueblo","Universales, inviolables e inalienables"], ans: 3, exp: "Los tres adjetivos clave son universales, inviolables e inalienables." },
+  { q: "¿Como respuesta a qué surgió la DSI?", opts: ["La Segunda Guerra Mundial","Los problemas de la revolución industrial","La crisis financiera del siglo XXI","La reforma protestante"], ans: 1, exp: "La DSI surge con la Rerum Novarum (1891) como respuesta a la cuestión obrera de la revolución industrial." },
+  { q: "¿Qué son las 'estructuras de pecado' según la DSI?", opts: ["Pecados individuales muy graves","Guerras entre naciones","Mecanismos económicos y sociales que impiden el desarrollo","Leyes civiles injustas"], ans: 2, exp: "Son mecanismos sistémicos (económicos, financieros, sociales) que perpetúan la pobreza y la injusticia." },
+  { q: "La dignidad moral de la persona depende de...", opts: ["El origen social","La edad","El ejercicio de la libertad (los actos realizados)","La enfermedad"], ans: 2, exp: "La dignidad moral puede degradarse con malos actos: depende de cómo se ejercita la libertad." },
+  { q: "El bien común se define como...", opts: ["La suma de bienes individuales de cada ciudadano","Los bienes materiales del Estado","Conjunto de condiciones sociales que permiten la plena realización de todos","La riqueza de una nación"], ans: 2, exp: "El bien común es el conjunto de condiciones (no de bienes) que permiten a todos alcanzar su plena realización." },
+  { q: "¿Qué afirma el destino universal de los bienes?", opts: ["Que debe abolirse la propiedad privada","Que la tierra fue destinada a todos; la propiedad privada se subordina a ello","Que la riqueza debe repartirse por igual","Que el Estado posee los medios de producción"], ans: 1, exp: "La propiedad privada es legítima, pero subordinada al derecho común a beneficiarse de los recursos de la tierra." },
+  { q: "La objeción de conciencia es...", opts: ["Un delito según el derecho civil","Un simple desacuerdo personal","Solo un derecho para los religiosos","Un derecho y deber de negarse a leyes que contradicen la ley moral"], ans: 3, exp: "Es a la vez un DEBER de conciencia y un DERECHO humano elemental que el Estado debe reconocer." },
+  { q: "La comunidad política existe fundamentalmente para...", opts: ["Ejercer el poder sobre los ciudadanos","Gestionar los recursos económicos del país","Alcanzar el bien común que la persona no puede lograr sola","Mantener el orden público"], ans: 2, exp: "El fundamento y el fin de la comunidad política es la persona humana y su bien común." },
+  { q: "La participación como principio de la DSI implica...", opts: ["Solo el voto en elecciones","Que todos tienen derecho y deber de contribuir a la vida social, cultural y económica","Solo la participación económica en empresas","Solo para los ciudadanos nacionales"], ans: 1, exp: "La participación es un derecho Y un deber: abarca la vida cultural, económica y política de la comunidad." },
+  { q: "La solidaridad en la DSI transforma...", opts: ["La economía en un sistema justo automáticamente","La caridad en obligación legal","Las 'estructuras de pecado' en estructuras de justicia","El Estado en una comunidad perfecta"], ans: 2, exp: "La solidaridad como virtud moral lleva a comprometerse por el bien de todos y cambia estructuras injustas." }
+];
+
+const devQuestions = [
+  {
+    label: "P.3 — Principios DSI",
+    badge: "Candidata 1 a desarrollo largo",
+    q: "Explica los principios de la doctrina social de la Iglesia",
+    hint: "Hay exactamente <span>6 principios</span>. Debes nombrarlos todos y explicar qué significa cada uno. Son el armazón de toda la enseñanza social.",
+    answer: `<p>Los <strong>seis principios permanentes</strong> constituyen el armazón de la enseñanza social católica:</p>
+    <ul>
+      <li><strong>Dignidad de la persona:</strong> toda persona posee un valor intrínseco que fundamenta sus derechos. Inalienable e independiente de cualquier circunstancia.</li>
+      <li><strong>Destino universal de los bienes:</strong> Dios ha destinado la tierra para el beneficio de todos. La propiedad privada es legítima pero subordinada a este derecho común.</li>
+      <li><strong>Bien común:</strong> conjunto de condiciones sociales que permiten a las personas y grupos alcanzar su plena realización. Las autoridades orientan sus decisiones hacia los más débiles.</li>
+      <li><strong>Subsidiaridad:</strong> las instancias superiores ayudan a las inferiores sin reemplazarlas. Salvaguarda la libertad e iniciativa de personas y cuerpos intermedios.</li>
+      <li><strong>Participación:</strong> todos tienen derecho y deber de contribuir a la vida cultural, económica y política de la comunidad.</li>
+      <li><strong>Solidaridad:</strong> reconoce la interdependencia entre personas y pueblos. Como virtud transforma 'estructuras de pecado' en estructuras de justicia.</li>
+    </ul>`
+  },
+  {
+    label: "P.7 — Dignidad humana",
+    badge: "Candidata 2 a desarrollo largo",
+    q: "Explica los distintos modos de entender la dignidad humana",
+    hint: "Hay <span>4 tipos</span>. Explica en qué consiste cada uno y concluye con la posición de la Iglesia sobre cuál es fundamental.",
+    answer: `<p>La dignidad humana es el valor que corresponde a la persona por el hecho de existir. Cuatro tipos complementarios:</p>
+    <ul>
+      <li><strong>Ontológica:</strong> valor por ser querida y amada por Dios. Es la única <strong>inalienable</strong>: permanece más allá de cualquier circunstancia y nunca puede eliminarse.</li>
+      <li><strong>Moral:</strong> depende del ejercicio de la libertad. Puede degradarse mediante actos contrarios al bien moral.</li>
+      <li><strong>Social:</strong> relacionada con las condiciones externas en las que vive la persona, como la pobreza o la marginación.</li>
+      <li><strong>Existencial:</strong> situaciones de sufrimiento intenso (enfermedad grave, desesperanza) que hacen sentir a la persona privada de su valor.</li>
+    </ul>
+    <p>Conclusión: la Iglesia insiste en que la dignidad intrínseca (ontológica) es inalienable e independiente de la capacidad de comprender o actuar. Los derechos humanos deben protegerse desde la concepción hasta la muerte natural.</p>`
+  },
+  {
+    label: "P.6 — Dimensiones persona",
+    badge: "Candidata 3 a desarrollo largo",
+    q: "Explica las dimensiones o características de la persona",
+    hint: "Hay <span>6 dimensiones</span> complementarias. La persona es una unidad; no se puede aislar una de otra.",
+    answer: `<p>La tradición cristiana presenta a la persona como unidad de cuerpo y alma, creada a imagen de Dios, con seis dimensiones:</p>
+    <ul>
+      <li><strong>Unidad cuerpo-alma:</strong> la persona es unidad de materia y espíritu. El cuerpo tiene valor; no se puede separar ni despreciar.</li>
+      <li><strong>Unicidad:</strong> cada persona es irrepetible, con historia propia. Un 'yo' capaz de autocomprenderse, autoposeerse y autodeterminarse.</li>
+      <li><strong>Trascendencia:</strong> capacidad de salir de sí misma para conocer el mundo, relacionarse con los demás y abrirse a Dios.</li>
+      <li><strong>Libertad y responsabilidad:</strong> libre para dirigirse al bien, orientada por la ley moral natural. La libertad no es absoluta.</li>
+      <li><strong>Igual dignidad:</strong> todos los seres humanos tienen la misma dignidad independientemente de sexo, raza o condición social.</li>
+      <li><strong>Sociabilidad:</strong> el ser humano es relacional y necesita integrarse y colaborar con los demás sin renunciar a su propia identidad.</li>
+    </ul>`
+  }
+];
+
+// ─── ROUTING ──────────────────────────────────────────────────────────────────
+
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+  const idx = ['home','study','test','dev'].indexOf(id);
+  document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  if (id === 'study' && !studyBuilt) buildStudy();
+  if (id === 'dev' && !devBuilt) buildDev();
+  window.scrollTo(0, 0);
+}
+
+// ─── STUDY ────────────────────────────────────────────────────────────────────
+
+let studyBuilt = false;
+function buildStudy() {
+  studyBuilt = true;
+  const wrap = document.getElementById('study-content');
+  blocks.forEach(block => {
+    const section = document.createElement('div');
+    section.className = 'block-section';
+    section.innerHTML = `<div class="block-title" style="--color:${block.color}"><div class="block-dot" style="background:${block.color}"></div>Bloque ${block.id} — ${block.name}</div>`;
+    block.questions.forEach(q => {
+      const card = document.createElement('div');
+      card.className = 'q-card';
+      const nota = q.nota ? `<div class="nota-box"><span>⚠</span><div>${q.nota}</div></div>` : '';
+      const keysHtml = q.keys.map(k => `<span class="kp-tag" style="background:${block.color}">${k}</span>`).join('');
+      card.innerHTML = `
+        <div class="q-header" onclick="toggleQ(this)">
+          <div class="q-num" style="background:${block.color}">${q.id}</div>
+          <div class="q-text">
+            <strong>${q.q}</strong>
+            <span class="q-short">${q.short}</span>
+          </div>
+          <div class="q-arrow">⌄</div>
+        </div>
+        <div class="q-body">
+          ${nota}
+          <div class="q-answer" style="border-left-color:${block.color}">${q.answer.replace(/\n/g,'<br>')}</div>
+          <div class="key-points">${keysHtml}</div>
+        </div>`;
+      section.appendChild(card);
+    });
+    wrap.appendChild(section);
+  });
+}
+
+function toggleQ(header) {
+  const card = header.parentElement;
+  card.classList.toggle('open');
+}
+
+// ─── TEST ─────────────────────────────────────────────────────────────────────
+
+let testState = { questions: [], current: 0, score: 0, answered: false, wrong: [] };
+
+function startTest() {
+  const shuffled = [...testQ].sort(() => Math.random() - .5);
+  testState = { questions: shuffled, current: 0, score: 0, answered: false, wrong: [] };
+  showView('test');
+  renderTestQ();
+}
+
+function renderTestQ() {
+  const { questions, current, score } = testState;
+  const total = questions.length;
+  const pct = Math.round((current / total) * 100);
+  document.getElementById('test-bar').style.width = pct + '%';
+  document.getElementById('test-counter').textContent = `Pregunta ${current + 1} de ${total}`;
+  document.getElementById('test-score-live').textContent = `Aciertos: ${score}`;
+
+  if (current >= total) { renderResult(); return; }
+  const q = questions[current];
+  const letters = ['A','B','C','D'];
+  document.getElementById('test-area').innerHTML = `
+    <div class="test-card">
+      <div class="test-q">${q.q}</div>
+      <div class="test-options">
+        ${q.opts.map((opt, i) => `
+          <button class="test-opt" onclick="answerTest(${i})" id="opt-${i}">
+            <span class="opt-letter">${letters[i]}</span>
+            ${opt}
+          </button>`).join('')}
+      </div>
+      <div class="test-feedback" id="test-fb"></div>
+      <button class="test-next" id="test-next-btn" onclick="nextTestQ()">Siguiente pregunta →</button>
+    </div>`;
+  testState.answered = false;
+}
+
+function answerTest(idx) {
+  if (testState.answered) return;
+  testState.answered = true;
+  const q = testState.questions[testState.current];
+  const correct = idx === q.ans;
+  if (correct) testState.score++;
+  else testState.wrong.push({ q: q.q, myAns: q.opts[idx], correctAns: q.opts[q.ans] });
+
+  const letters = ['A','B','C','D'];
+  q.opts.forEach((_, i) => {
+    const btn = document.getElementById('opt-' + i);
+    btn.disabled = true;
+    if (i === q.ans) btn.classList.add('correct');
+    else if (i === idx && !correct) btn.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('test-fb');
+  fb.className = 'test-feedback show ' + (correct ? 'ok' : 'fail');
+  fb.innerHTML = correct ? `<strong>Correcto!</strong> ${q.exp}` : `<strong>Incorrecto.</strong> ${q.exp}`;
+  document.getElementById('test-next-btn').className = 'test-next show';
+}
+
+function nextTestQ() {
+  testState.current++;
+  renderTestQ();
+}
+
+function renderResult() {
+  const { score, questions, wrong } = testState;
+  const total = questions.length;
+  const pct = Math.round((score / total) * 100);
+  let msg, sub, color;
+  if (pct >= 90) { msg = "Excelente! A por el 10."; sub = "Dominas el temario."; color = "#059669"; }
+  else if (pct >= 70) { msg = "Muy bien, casi lo tienes."; sub = "Repasa las que fallaste."; color = "#2563EB"; }
+  else if (pct >= 50) { msg = "Regular, hay que repasar."; sub = "Vuelve a estudiar los bloques donde fallaste."; color = "#D97706"; }
+  else { msg = "Hay que darle más caña."; sub = "Estudia el temario y vuelve a intentarlo."; color = "#EF4444"; }
+
+  const wrongHtml = wrong.length > 0 ? `
+    <div class="result-wrong">
+      <h4>Preguntas falladas (${wrong.length})</h4>
+      ${wrong.map(w => `<div class="wrong-item">
+        <div class="wi-q">${w.q}</div>
+        <div class="wi-correct">✓ Correcto: ${w.correctAns}</div>
+        <div class="wi-mine">✗ Tu respuesta: ${w.myAns}</div>
+      </div>`).join('')}
+    </div>` : '<p style="color:#059669;font-weight:600;margin-bottom:24px">Sin errores! Perfecto.</p>';
+
+  document.getElementById('test-area').innerHTML = `
+    <div class="result-card">
+      <div class="result-score" style="color:${color}">${score}/${total}</div>
+      <div class="result-label">${pct}% de aciertos</div>
+      <div class="result-msg">${msg}</div>
+      <div class="result-sub">${sub}</div>
+      ${wrongHtml}
+      <button class="btn-primary" onclick="startTest()" style="max-width:260px;margin:0 auto;display:block">Repetir test</button>
+    </div>`;
+}
+
+// ─── DESARROLLO ───────────────────────────────────────────────────────────────
+
+let devBuilt = false;
+let devCurrent = 0;
+let devRevealed = false;
+
+function buildDev() {
+  devBuilt = true;
+  const pills = document.getElementById('dev-pills');
+  devQuestions.forEach((dq, i) => {
+    const pill = document.createElement('button');
+    pill.className = 'dev-pill' + (i === 0 ? ' active' : '');
+    pill.textContent = dq.label;
+    pill.onclick = () => { devCurrent = i; renderDev(); updatePills(); };
+    pills.appendChild(pill);
+  });
+  renderDev();
+}
+
+function updatePills() {
+  document.querySelectorAll('.dev-pill').forEach((p, i) => {
+    p.classList.toggle('active', i === devCurrent);
+  });
+}
+
+function renderDev() {
+  devRevealed = false;
+  const dq = devQuestions[devCurrent];
+  document.getElementById('dev-card-area').innerHTML = `
+    <div class="dev-card">
+      <div class="dev-badge">${dq.badge}</div>
+      <div class="dev-question">${dq.q}</div>
+      <div class="dev-hint">Pista: ${dq.hint}</div>
+      <button class="btn-reveal" onclick="revealDev()">Revelar respuesta</button>
+      <div class="dev-answer" id="dev-answer-box">
+        <div class="dev-answer-box">
+          <h4>Respuesta completa</h4>
+          ${dq.answer}
+        </div>
+        <div class="rating-section">
+          <p>¿Cuánto sabías?</p>
+          <div class="rating-btns">
+            <button class="rating-btn green" onclick="rateAndNext('green')">Lo sabía bien</button>
+            <button class="rating-btn yellow" onclick="rateAndNext('yellow')">Lo tenía a medias</button>
+            <button class="rating-btn red" onclick="rateAndNext('red')">No lo sabía</button>
+          </div>
+        </div>
+        <div class="confetti-msg" id="dev-confetti"></div>
+      </div>
+    </div>
+    <div class="dev-nav">
+      <button class="btn-nav" onclick="devPrev()" ${devCurrent === 0 ? 'disabled' : ''}>&larr; Anterior</button>
+      <button class="btn-nav" onclick="devNext()" ${devCurrent === devQuestions.length - 1 ? 'disabled' : ''}>Siguiente &rarr;</button>
+    </div>`;
+}
+
+function revealDev() {
+  document.querySelector('.btn-reveal').style.display = 'none';
+  document.getElementById('dev-answer-box').classList.add('visible');
+  devRevealed = true;
+}
+
+function rateAndNext(level) {
+  const msgs = {
+    green: "Perfecto! Sigue así.",
+    yellow: "Repásala un par de veces más y la clavarás.",
+    red: "No te preocupes, vuélvela a leer despacio y repite."
+  };
+  const confetti = document.getElementById('dev-confetti');
+  confetti.textContent = msgs[level];
+  confetti.className = 'confetti-msg show';
+  setTimeout(() => {
+    if (devCurrent < devQuestions.length - 1) devNext();
+  }, 1400);
+}
+
+function devNext() { devCurrent = Math.min(devCurrent + 1, devQuestions.length - 1); updatePills(); renderDev(); }
+function devPrev() { devCurrent = Math.max(devCurrent - 1, 0); updatePills(); renderDev(); }
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+showView('home');
+</script>
+</body>
+</html>
