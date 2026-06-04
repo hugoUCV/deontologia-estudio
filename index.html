@@ -85,6 +85,29 @@ header { background:rgba(15,23,42,.97); backdrop-filter:blur(10px); padding:12px
 .sq-keys { display:flex; flex-wrap:wrap; gap:6px; }
 .sq-key { background:var(--bc); color:white; font-size:11px; font-weight:600; padding:4px 10px; border-radius:20px; opacity:.8; }
 
+/* ── NARRATION ── */
+.narr-bar { display:flex; align-items:center; gap:8px; margin-bottom:14px; }
+.narr-btn {
+  display:inline-flex; align-items:center; gap:7px;
+  background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.14);
+  color:rgba(255,255,255,.55); font-family:inherit; font-size:12px; font-weight:700;
+  padding:8px 16px; border-radius:8px; cursor:pointer; transition:all .2s; letter-spacing:.3px;
+}
+.narr-btn:hover { border-color:rgba(255,255,255,.3); color:white; background:rgba(255,255,255,.09); }
+.narr-btn.playing { border-color:#F59E0B; color:#F59E0B; background:rgba(245,158,11,.08); }
+.narr-btn .nb-dot {
+  width:8px; height:8px; border-radius:50%; background:currentColor; flex-shrink:0;
+  transition:all .3s;
+}
+.narr-btn.playing .nb-dot { animation:pulse-dot 1s ease-in-out infinite; }
+@keyframes pulse-dot { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.6);opacity:.6} }
+.narr-speed {
+  background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1);
+  color:rgba(255,255,255,.4); font-family:inherit; font-size:11px; font-weight:600;
+  padding:7px 10px; border-radius:8px; cursor:pointer; transition:all .2s; outline:none;
+}
+.narr-speed:hover { border-color:rgba(255,255,255,.25); color:rgba(255,255,255,.7); }
+
 /* ── GAME VIEW ── */
 #view-game { display:none; flex:1; flex-direction:column; align-items:center; }
 #view-game.active { display:flex; }
@@ -537,19 +560,29 @@ function buildStudy() {
       card.className = 'sq-card';
       const nota = item.nota ? `<div class="sq-nota">⚠ ${item.nota}</div>` : '';
       const keys = item.keys.map(k=>`<span class="sq-key" style="background:${block.color}">${k}</span>`).join('');
-      const eli5html = item.eli5 ? `<div class="sq-eli5"><div class="eli5-label">En palabras simples</div><div class="eli5-text">${item.eli5}</div></div>` : '';
+      const eli5html = item.eli5 ? `<div class="sq-eli5"><div class="eli5-label">En palabras simples</div><div class="eli5-text" id="eli5-${item.id}">${item.eli5}</div></div>` : '';
       card.innerHTML = `
         <div class="sq-header" onclick="this.parentElement.classList.toggle('open')">
           <div class="sq-num" style="background:${block.color}">${item.id}</div>
           <div class="sq-text">
-            <strong>${item.q}</strong>
+            <strong id="qtitle-${item.id}">${item.q}</strong>
             <span class="sq-short">${item.short}</span>
           </div>
           <div class="sq-arrow">⌄</div>
         </div>
         <div class="sq-body">
           ${nota}
-          <div class="sq-answer" style="border-left-color:${block.color}">${item.answer}</div>
+          <div class="narr-bar">
+            <button class="narr-btn" id="narr-${item.id}" onclick="narrateCard(${item.id}, this)">
+              <span class="nb-dot"></span> Escuchar
+            </button>
+            <select class="narr-speed" id="speed-${item.id}" title="Velocidad">
+              <option value="0.8">Lento</option>
+              <option value="1" selected>Normal</option>
+              <option value="1.3">Rápido</option>
+            </select>
+          </div>
+          <div class="sq-answer" id="ans-${item.id}" style="border-left-color:${block.color}">${item.answer}</div>
           ${eli5html}
           <div class="sq-keys">${keys}</div>
         </div>`;
@@ -658,6 +691,90 @@ function showEnd(){
   document.getElementById('end-fails').textContent=totalFails;
   document.getElementById('end-passes').textContent=totalPasses;
 }
+
+// ── NARRATION ─────────────────────────────────────────────────────────────────
+let activeNarrBtn = null;
+
+function stripHtml(html) {
+  const d = document.createElement('div');
+  d.innerHTML = html;
+  return (d.textContent || d.innerText || '').replace(/\s+/g, ' ').trim();
+}
+
+function getBestSpanishVoice() {
+  const voices = window.speechSynthesis.getVoices();
+  // Prefer natural-sounding Spanish voices
+  const preferred = ['Google español', 'Microsoft Pablo', 'Microsoft Sabina', 'Mónica', 'Jorge'];
+  for (const name of preferred) {
+    const v = voices.find(v => v.name.includes(name));
+    if (v) return v;
+  }
+  return voices.find(v => v.lang.startsWith('es')) || null;
+}
+
+function narrateCard(id, btn) {
+  // If same card is playing → stop
+  if (window.speechSynthesis.speaking || window.speechSynthesis.paused) {
+    window.speechSynthesis.cancel();
+    if (activeNarrBtn) {
+      activeNarrBtn.classList.remove('playing');
+      activeNarrBtn.innerHTML = '<span class="nb-dot"></span> Escuchar';
+    }
+    if (activeNarrBtn === btn) { activeNarrBtn = null; return; }
+  }
+
+  // Build the text to narrate
+  const title   = document.getElementById('qtitle-' + id);
+  const answer  = document.getElementById('ans-'    + id);
+  const eli5    = document.getElementById('eli5-'   + id);
+  const speedEl = document.getElementById('speed-'  + id);
+
+  let text = '';
+  if (title)  text += stripHtml(title.innerHTML)  + '. ';
+  if (answer) text += stripHtml(answer.innerHTML) + ' ';
+  if (eli5)   text += 'En palabras simples: ' + stripHtml(eli5.innerHTML);
+
+  const rate = speedEl ? parseFloat(speedEl.value) : 1;
+
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang  = 'es-ES';
+  utt.rate  = rate;
+  utt.pitch = 1;
+
+  // Set voice once voices are loaded
+  const setVoiceAndSpeak = () => {
+    const voice = getBestSpanishVoice();
+    if (voice) utt.voice = voice;
+    window.speechSynthesis.speak(utt);
+  };
+
+  const voices = window.speechSynthesis.getVoices();
+  if (voices.length) {
+    setVoiceAndSpeak();
+  } else {
+    window.speechSynthesis.onvoiceschanged = () => { setVoiceAndSpeak(); };
+  }
+
+  activeNarrBtn = btn;
+  btn.classList.add('playing');
+  btn.innerHTML = '<span class="nb-dot"></span> Parar';
+
+  utt.onend = utt.onerror = () => {
+    btn.classList.remove('playing');
+    btn.innerHTML = '<span class="nb-dot"></span> Escuchar';
+    activeNarrBtn = null;
+  };
+}
+
+// Stop narration when closing a card
+document.addEventListener('click', e => {
+  if (e.target.closest('.sq-header') && activeNarrBtn) {
+    window.speechSynthesis.cancel();
+    activeNarrBtn.classList.remove('playing');
+    activeNarrBtn.innerHTML = '<span class="nb-dot"></span> Escuchar';
+    activeNarrBtn = null;
+  }
+});
 
 buildStudy();
 showView('study');
