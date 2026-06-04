@@ -241,12 +241,12 @@ header { background:rgba(15,23,42,.97); backdrop-filter:blur(10px); padding:12px
     <div class="start-title">Flashcards de Examen</div>
     <div class="start-sub">Responde correctamente cada tarjeta para superarla. Si fallas, vuelve al mazo. Las de desarrollo se corrigen automáticamente.</div>
     <div class="start-info">
-      <div class="si-card"><span class="n">15</span><span class="l">Tarjetas</span></div>
-      <div class="si-card"><span class="n">12</span><span class="l">Test</span></div>
-      <div class="si-card"><span class="n">3</span><span class="l">Desarrollo</span></div>
+      <div class="si-card"><span class="n">22</span><span class="l">Tarjetas</span></div>
+      <div class="si-card"><span class="n">22</span><span class="l">Desarrollo</span></div>
+      <div class="si-card"><span class="n">3</span><span class="l">Bloques</span></div>
     </div>
     <button class="btn-start" onclick="startDeck()">Empezar</button>
-    <div class="start-rule">Las tarjetas falladas vuelven al mazo. En desarrollo, el algoritmo detecta los conceptos clave en tu respuesta.</div>
+    <div class="start-rule">Todas las tarjetas son de desarrollo: escribe tu respuesta y el algoritmo detecta si has mencionado los conceptos clave.</div>
   </div>
   <div id="game-active" style="display:none; flex-direction:column; align-items:center; flex:1; width:100%;">
     <div class="progress-wrap">
@@ -461,14 +461,26 @@ const STUDY = [
 
 // ── GAME DATA ─────────────────────────────────────────────────────────────────
 const CARDS = [
-  { id:1, block:1, blockName:"Bloque 1 — DSI", color:"#2563EB", type:"test",
+  { id:1, block:1, blockName:"Bloque 1 — DSI", color:"#2563EB", type:"dev",
     q:"¿Qué es la doctrina social de la Iglesia?",
-    opts:["Una propuesta política o económica alternativa","El estudio de las implicaciones éticas de los proyectos políticos y económicos, formulado como enseñanza moral","Una ideología intermedia entre el capitalismo y el comunismo","Un partido político cristiano"],
-    ans:1, exp:"La DSI NO es ideología ni propuesta política. Es enseñanza moral ante la cuestión social surgida con la revolución industrial." },
-  { id:2, block:1, blockName:"Bloque 1 — DSI", color:"#2563EB", type:"test",
-    q:"¿A quién va dirigida la DSI y cuál es su finalidad?",
-    opts:["Solo a los sacerdotes y religiosos","Solo a los países pobres","A los católicos y a todas las personas de buena voluntad, para transformar las estructuras a la luz de la justicia","Solo a los gobiernos cristianos"],
-    ans:2, exp:"La DSI se dirige a todos los católicos y a personas de buena voluntad. Su fin es orientar la acción para transformar estructuras económicas, políticas y culturales." },
+    hint:"Aclara primero lo que <strong>NO es</strong>, luego explica lo que sí es y en qué contexto histórico surgió.",
+    concepts:[
+      { name:"No es ideología ni propuesta política", kws:["no es ideologia","no es propuesta","no es politica","ideologia"], hint:"la DSI no es ideología ni propuesta política ni económica" },
+      { name:"Enseñanza moral",                       kws:["ensenanza moral","ensenanza","moral"], hint:"es una enseñanza moral de la Iglesia" },
+      { name:"Implicaciones éticas",                  kws:["implicaciones eticas","implicaciones","eticas"], hint:"estudia las implicaciones éticas de los proyectos políticos y económicos" },
+      { name:"Revolución industrial / cuestión social",kws:["revolucion industrial","problemas sociales","cuestion social","cuestion obrera"], hint:"surgió como respuesta a los problemas de la revolución industrial" },
+    ],
+    answer:`<p>La DSI no es una propuesta política, económica ni una ideología intermedia entre sistemas. Es el <strong>estudio de las implicaciones éticas</strong> de los proyectos políticos y económicos, formulado como <strong>enseñanza moral</strong> de la Iglesia en respuesta a los problemas sociales surgidos desde la revolución industrial. Constituye parte integrante del ministerio evangelizador.</p>` },
+  { id:2, block:1, blockName:"Bloque 1 — DSI", color:"#2563EB", type:"dev",
+    q:"¿A quién va dirigida la DSI y para qué sirve?",
+    hint:"Indica el destinatario, su finalidad y si es un sistema cerrado o abierto.",
+    concepts:[
+      { name:"Personas de buena voluntad",       kws:["buena voluntad","personas de buena"], hint:"se dirige a católicos y personas de buena voluntad" },
+      { name:"Transformar estructuras injustas",  kws:["transformar","estructuras"], hint:"busca transformar las estructuras económicas, políticas y culturales" },
+      { name:"Justicia y caridad",               kws:["justicia","caridad"], hint:"a la luz de la justicia y la caridad" },
+      { name:"No es sistema cerrado: invita a actuar", kws:["no es sistema","invita","accion","denunciar","denuncia","soluciones"], hint:"no es un sistema cerrado, sino una invitación a la acción" },
+    ],
+    answer:`<p>La DSI está dirigida a los católicos y a todas las <strong>personas de buena voluntad</strong>. Su finalidad es orientar la acción para que las estructuras económicas, políticas y culturales sean transformadas a la luz de la <strong>justicia y la caridad</strong>. No es un sistema cerrado, sino una <strong>invitación a la acción</strong>: ilumina problemas, estimula la lucha por la justicia y propone criterios para denunciar injusticias y promover soluciones.</p>` },
   { id:3, block:1, blockName:"Bloque 1 — DSI", color:"#2563EB", type:"dev",
     q:"Explica los principios permanentes de la doctrina social de la Iglesia",
     nota:"Son exactamente 6. Nómbralos todos y explica brevemente cada uno.",
@@ -482,14 +494,29 @@ const CARDS = [
       { name:"Solidaridad",                      kws:["solidaridad","interdependencia","estructuras de pecado"], hint:"transforma estructuras de pecado en estructuras de justicia" },
     ],
     answer:`<h4>Los 6 principios permanentes</h4><ul><li><strong>Dignidad de la persona:</strong> valor intrínseco que fundamenta todos los derechos. Inalienable.</li><li><strong>Destino universal de los bienes:</strong> la tierra fue destinada a todos. La propiedad privada se subordina al bien común.</li><li><strong>Bien común:</strong> condiciones sociales que permiten la plena realización de todos.</li><li><strong>Subsidiaridad:</strong> las instancias superiores ayudan a las inferiores sin reemplazarlas.</li><li><strong>Participación:</strong> todos tienen derecho y deber de contribuir a la vida cultural, económica y política.</li><li><strong>Solidaridad:</strong> transforma "estructuras de pecado" en estructuras de justicia.</li></ul>` },
-  { id:4, block:1, blockName:"Bloque 1 — DSI", color:"#2563EB", type:"test", nota:"⚠ El error más frecuente: 1891, NO 1892.",
-    q:"¿Cuál fue el primer documento expresamente dedicado a la DSI y en qué año se promulgó?",
-    opts:["Quadragesimo Anno, 1931","Rerum Novarum, León XIII, 1892","Rerum Novarum, León XIII, 1891","Gaudium et Spes, 1965"],
-    ans:2, exp:"Rerum Novarum (1891). Surge de la 'cuestión obrera' durante la revolución industrial. Defiende el salario justo, la jornada razonable y el derecho de asociación." },
-  { id:5, block:1, blockName:"Bloque 1 — DSI", color:"#2563EB", type:"test",
-    q:"¿Por qué las enseñanzas sociales de la Iglesia pueden servir de inspiración a toda persona?",
-    opts:["Porque son impuestas por el derecho internacional","Porque son exclusivas del ámbito cristiano","Porque se apoyan en la fe y en la razón natural, proponiendo principios éticos universalmente compartibles","Porque derivan de un acuerdo entre todos los Estados"],
-    ans:2, exp:"Sus fuentes son la Revelación Y la ley natural. Esto las hace compartibles por cualquier persona de buena voluntad, al margen de su religión." },
+  { id:4, block:1, blockName:"Bloque 1 — DSI", color:"#2563EB", type:"dev",
+    nota:"⚠ El error más frecuente: 1891, NO 1892.",
+    q:"¿Cuál fue el primer documento expresamente dedicado a la DSI? ¿Cuándo, quién y por qué?",
+    hint:"Nombra el documento, el papa, el año exacto y el contexto que lo provocó. Menciona al menos dos contenidos concretos.",
+    concepts:[
+      { name:"Rerum Novarum",              kws:["rerum novarum"], hint:"el documento se llama Rerum Novarum" },
+      { name:"León XIII",                  kws:["leon xiii","leon 13","papa leon"], hint:"lo promulgó el papa León XIII" },
+      { name:"1891",                       kws:["1891"], hint:"el año es 1891 (no 1892)" },
+      { name:"Cuestión obrera / revolución industrial", kws:["cuestion obrera","obreros","trabajadores","revolucion industrial"], hint:"surgió de la cuestión obrera durante la revolución industrial" },
+      { name:"Salario justo / jornada razonable", kws:["salario justo","salario","jornada"], hint:"defiende el salario justo y la jornada razonable" },
+      { name:"Derecho de asociación",      kws:["asociacion","derecho de asociacion"], hint:"reconoce el derecho de asociación de los trabajadores" },
+    ],
+    answer:`<p>La encíclica <strong>Rerum Novarum</strong>, promulgada por el papa <strong>León XIII en 1891</strong>. Surgió de la llamada <strong>"cuestión obrera"</strong>: explotación laboral, jornadas extenuantes y ausencia de protecciones durante la revolución industrial. Defiende la dignidad del trabajador, el <strong>salario justo</strong>, la <strong>jornada razonable</strong> y el <strong>derecho de asociación</strong>.</p>` },
+  { id:5, block:1, blockName:"Bloque 1 — DSI", color:"#2563EB", type:"dev",
+    q:"¿Por qué las enseñanzas sociales de la Iglesia pueden inspirar a cualquier persona, sea o no creyente?",
+    hint:"La clave está en las <strong>fuentes</strong> de la DSI. ¿Solo se apoya en la fe o hay algo más accesible para todos?",
+    concepts:[
+      { name:"Fe y razón",               kws:["fe","razon","fe y razon"], hint:"se apoyan en la fe Y en la razón" },
+      { name:"Ley natural",              kws:["ley natural"], hint:"sus fuentes incluyen la ley natural" },
+      { name:"Personas de buena voluntad", kws:["buena voluntad"], hint:"se dirige a personas de buena voluntad" },
+      { name:"Principios universales compartibles", kws:["universales","compartibles","cualquier persona","independientemente"], hint:"sus principios son compartibles por cualquier persona al margen de su religión" },
+    ],
+    answer:`<p>Sus fuentes son la <strong>Revelación y la ley natural</strong>, no solo la fe. Esto hace que sus principios puedan ser compartidos por cualquier persona de buena voluntad, al margen de su religión. Al defender la dignidad universal y el bien común con argumentos racionales, ofrece criterios éticos que cualquier persona razonable puede aceptar.</p>` },
   { id:6, block:2, blockName:"Bloque 2 — La Persona", color:"#7C3AED", type:"dev",
     q:"Explica las dimensiones o características de la persona según la tradición cristiana",
     nota:"Son exactamente 6 dimensiones. La persona es una unidad: no se puede aislar una de otra.",
@@ -514,38 +541,170 @@ const CARDS = [
       { name:"Dignidad existencial",              kws:["existencial","sufrimiento","enfermedad","desesperanza","sin paz","grave"], hint:"situaciones de sufrimiento intenso que hacen sentir a la persona privada de valor" },
     ],
     answer:`<h4>Los 4 tipos de dignidad humana</h4><ul><li><strong>Ontológica:</strong> valor por ser amada y querida por Dios. La única <strong>inalienable</strong>.</li><li><strong>Moral:</strong> depende del ejercicio de la libertad; puede degradarse con malos actos.</li><li><strong>Social:</strong> condicionada por la pobreza, marginación o exclusión.</li><li><strong>Existencial:</strong> situaciones de sufrimiento intenso (enfermedad grave, desesperanza).</li></ul><p>La Iglesia insiste: la dignidad ontológica es inalienable e independiente de la capacidad de comprender o actuar.</p>` },
-  { id:8, block:2, blockName:"Bloque 2 — La Persona", color:"#7C3AED", type:"test",
+  { id:8, block:2, blockName:"Bloque 2 — La Persona", color:"#7C3AED", type:"dev",
     q:"¿Qué es la objeción de conciencia?",
-    opts:["Un delito tipificado en el código penal","Un derecho exclusivo de los religiosos y sacerdotes","El derecho y deber de negarse a obedecer leyes civiles que contradicen la ley moral; el Estado debe reconocerlo","Una opinión personal sin valor jurídico"],
-    ans:2, exp:"Es a la vez un DEBER de conciencia y un DERECHO humano elemental. No es arbitraria: responde a una contradicción entre la ley civil y la ley moral." },
-  { id:9, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"test",
-    q:"¿Qué son las 'estructuras de pecado' en el contexto de la cooperación internacional?",
-    opts:["Pecados individuales muy graves cometidos por políticos","Guerras entre naciones que impiden el comercio","Mecanismos económicos, financieros y sociales que impiden el desarrollo de los pueblos","Leyes civiles injustas de los países ricos"],
-    ans:2, exp:"Las estructuras de pecado son mecanismos sistémicos (no individuales) que perpetúan la pobreza y la injusticia." },
-  { id:10, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"test",
-    q:"¿Cuántas condiciones exige la doctrina de la guerra justa y cómo deben cumplirse?",
-    opts:["2 condiciones, basta con cumplir una","3 condiciones, basta con la mayoría","4 condiciones, todas simultáneamente","5 condiciones, la mitad es suficiente"],
-    ans:2, exp:"Son 4 condiciones y deben cumplirse TODAS a la vez: daño grave y cierto, agotados los medios pacíficos, probabilidad seria de éxito y proporcionalidad de los males." },
-  { id:11, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"test",
-    q:"¿Cuáles son las tres características esenciales de los derechos humanos?",
-    opts:["Nacionales, relativos y negociables","Universales, inviolables e inalienables","Culturales, históricos y modificables","Civiles, políticos y económicos"],
-    ans:1, exp:"Los tres adjetivos clave: universales (para todos), inviolables (ningún poder puede suprimirlos) e inalienables (la persona no puede renunciar a ellos)." },
-  { id:12, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"test",
-    q:"¿Para qué existe la comunidad política y cuáles son los límites de la autoridad?",
-    opts:["Para ejercer el poder sobre los ciudadanos sin límites","Para gestionar exclusivamente los recursos económicos","Para alcanzar el bien común; la autoridad está limitada por el orden moral y la ley justa","Para mantener el orden público y la seguridad nacional"],
-    ans:2, exp:"La comunidad política existe para el bien común (fin que la persona no puede lograr sola). La autoridad no puede suplantar la libre iniciativa de personas y grupos." },
-  { id:13, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"test",
-    q:"¿Cuál es la dimensión fundamental del trabajo y por qué?",
-    opts:["La objetiva: depende de lo que se produce","Son iguales en importancia","La subjetiva: depende de la persona que trabaja, no del tipo de actividad","La objetiva: incluye los instrumentos y técnicas"],
-    ans:2, exp:"La dimensión subjetiva (la persona como sujeto) es el FUNDAMENTO: el valor del trabajo no depende de qué se produce, sino de la dignidad de quien lo realiza." },
-  { id:14, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"test",
-    q:"¿Cuál es el principio central sobre la dignidad del trabajo en la DSI?",
-    opts:["El hombre es para el trabajo: debe maximizar la producción","El trabajo es para el hombre, no el hombre para el trabajo; el trabajador nunca es una mercancía","El capital tiene prioridad sobre el trabajador","El trabajo solo tiene valor si produce riqueza"],
-    ans:1, exp:"El trabajo es PARA el hombre. El trabajador nunca es una mercancía. La DSI exige: primacía del trabajador sobre el capital, remuneración justa y derecho al descanso." },
-  { id:15, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"test",
-    q:"¿Quién acuñó el término 'deontología' y qué incluye un código deontológico?",
-    opts:["Aristóteles; incluye virtudes morales","Kant; incluye imperativos categóricos","Jeremy Bentham; incluye normas de actuación, sistema de quejas, tipificación de infracciones y sanciones","Marx; incluye derechos de los trabajadores"],
-    ans:2, exp:"Jeremy Bentham acuñó el término. Un código deontológico regula deberes profesionales: normas, quejas, infracciones y sanciones. Complementa la legislación." },
+    hint:"Define qué es, si es un derecho, un deber o ambos, y cuál es la posición del Estado respecto a ella.",
+    concepts:[
+      { name:"Derecho Y deber (ambos)", kws:["derecho","deber","derecho y deber"], hint:"es a la vez un derecho y un deber" },
+      { name:"Negarse a leyes civiles injustas", kws:["negarse","leyes civiles","leyes injustas","injustas"], hint:"negarse a obedecer leyes civiles que contradicen la ley moral" },
+      { name:"Contradicen la ley moral", kws:["ley moral","moral","contradice","contraria"], hint:"cuando la ley civil contradice la ley moral" },
+      { name:"El Estado debe reconocerlo", kws:["estado","reconocer","proteger","reconocerlo"], hint:"las leyes civiles deben reconocerlo y protegerlo" },
+    ],
+    answer:`<p>La objeción de conciencia es el <strong>derecho y el deber</strong> de negarse a obedecer leyes civiles cuando estas contradicen la ley moral o los derechos fundamentales. No es desobediencia arbitraria: responde a una contradicción real entre la norma civil y la ley moral. El <strong>Estado debe reconocerlo y protegerlo</strong> como derecho humano elemental.</p>` },
+  { id:9, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"dev",
+    q:"¿Qué es la cooperación internacional al desarrollo y qué son las 'estructuras de pecado'?",
+    hint:"Explica qué son las estructuras de pecado (no son pecados individuales) y en qué se funda el derecho al desarrollo.",
+    concepts:[
+      { name:"Mecanismos sistémicos (no individuales)", kws:["mecanismos","economicos","financieros","sistemicos","no individuales","estructurales"], hint:"son mecanismos sistémicos económicos y financieros, no pecados de personas concretas" },
+      { name:"Impiden el desarrollo",        kws:["impiden","desarrollo","impiden el desarrollo"], hint:"impiden el desarrollo de los pueblos" },
+      { name:"Derecho al desarrollo",        kws:["derecho al desarrollo"], hint:"la cooperación busca garantizar el derecho al desarrollo" },
+      { name:"Unidad de la familia humana / solidaridad", kws:["familia humana","solidaridad","unidad","igualdad"], hint:"se funda en la unidad de la familia humana y la solidaridad" },
+    ],
+    answer:`<p>La cooperación internacional garantiza el <strong>derecho al desarrollo</strong> de todos los pueblos. El subdesarrollo no es solo fruto de decisiones erróneas, sino también de <strong>"estructuras de pecado"</strong>: mecanismos económicos, financieros y sociales sistémicos que impiden el desarrollo. Se funda en la unidad de la familia humana, la igualdad entre pueblos, el destino universal de los bienes y la solidaridad.</p>` },
+  { id:10, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"dev",
+    q:"¿Qué se entiende por 'guerra justa'? Enumera y explica las condiciones necesarias.",
+    hint:"La Iglesia pone <strong>4 condiciones</strong> y deben cumplirse de una forma muy específica. Eso es lo que hace difícil justificar una guerra.",
+    concepts:[
+      { name:"Daño grave y cierto",         kws:["dano grave","grave y cierto","dano","grave"], hint:"el daño causado por el agresor debe ser duradero, grave y cierto" },
+      { name:"Agotados los medios pacíficos",kws:["medios pacificos","agotados","medios"], hint:"todos los demás medios han resultado impracticables o ineficaces" },
+      { name:"Probabilidad seria de éxito", kws:["probabilidad","exito","probabilidad de exito"], hint:"deben existir condiciones serias de éxito" },
+      { name:"Proporcionalidad de los males",kws:["proporcionalidad","males no mayores","proporcional"], hint:"los males causados no deben ser peores que el mal que se evita" },
+      { name:"Todas simultáneamente",       kws:["simultaneamente","todas","al mismo tiempo","a la vez"], hint:"deben cumplirse TODAS a la vez; si falta una, no es justa" },
+    ],
+    answer:`<p>La guerra es un <strong>fracaso de la paz</strong>. Se admite la legítima defensa solo si se cumplen <strong>simultáneamente</strong> cuatro condiciones: (1) daño grave y cierto del agresor; (2) agotados todos los medios pacíficos; (3) probabilidad seria de éxito; (4) males causados no mayores que el mal evitado. Si falta una sola, el uso de la fuerza no es moralmente lícito.</p>` },
+  { id:11, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"dev",
+    q:"¿Qué son los derechos humanos? Define sus características y da ejemplos concretos.",
+    hint:"Tres adjetivos clave los definen. Menciona también la relación entre derechos y deberes, y si se extienden solo a personas individuales.",
+    concepts:[
+      { name:"Por el mero hecho de existir", kws:["mero hecho","hecho de existir","solo por existir","por existir","existir"], hint:"se tienen por el mero hecho de existir" },
+      { name:"Universales",    kws:["universales"], hint:"son universales: para todo ser humano" },
+      { name:"Inviolables",    kws:["inviolables"], hint:"son inviolables: ningún poder puede suprimirlos" },
+      { name:"Inalienables",   kws:["inalienables"], hint:"son inalienables: la persona no puede renunciar a ellos" },
+      { name:"A cada derecho corresponde un deber", kws:["deber","corresponde un deber","cada derecho"], hint:"a cada derecho corresponde un deber en los demás" },
+    ],
+    answer:`<p>Los derechos humanos son los derechos que toda persona posee por el <strong>mero hecho de existir</strong>. Son <strong>universales</strong> (para todos), <strong>inviolables</strong> (ningún poder puede suprimirlos) e <strong>inalienables</strong> (la persona no puede renunciar a ellos). Incluyen el derecho a la vida, a la familia, al trabajo, a la fe. <strong>A cada derecho corresponde un deber</strong> en los demás de respetarlo. También se extienden a los pueblos: derecho a existir, a su cultura, a autogobernarse y a vivir en paz.</p>` },
+  { id:12, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"dev",
+    q:"¿Por qué es necesaria la comunidad política? ¿Cuáles son los límites de la autoridad?",
+    hint:"Explica el fin de la comunidad política, por qué la persona sola no puede lograrlo, y qué ocurre cuando la autoridad traspasa sus límites.",
+    concepts:[
+      { name:"Bien común",                      kws:["bien comun"], hint:"existe para alcanzar el bien común" },
+      { name:"Persona no puede lograrlo sola",  kws:["no puede lograr sola","sola","por si sola","no puede solo"], hint:"la persona sola no puede alcanzar el bien común" },
+      { name:"Autoridad limitada por ley moral",kws:["autoridad","limitada","ley justa","orden moral","limite"], hint:"la autoridad está limitada por el orden moral y la ley justa" },
+      { name:"Derecho de resistencia",          kws:["resistencia","derecho de resistencia"], hint:"si viola gravemente el derecho natural, existe el derecho de resistencia" },
+    ],
+    answer:`<p>La comunidad política existe para alcanzar el <strong>bien común</strong>, fin que la persona no puede lograr por sí sola. La persona humana es su fundamento y su fin. La autoridad es necesaria pero está <strong>limitada por el orden moral y la ley justa</strong>: no puede suplantar la libre iniciativa de personas y grupos. Si viola gravemente el derecho natural, la DSI reconoce el <strong>derecho de resistencia</strong>.</p>` },
+  { id:13, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"dev",
+    q:"Explica la diferencia entre la dimensión objetiva y subjetiva del trabajo. ¿Cuál es la fundamental y por qué?",
+    hint:"Define cada una, luego argumenta cuál prevalece y por qué eso implica que el trabajador no puede ser tratado como una mercancía.",
+    concepts:[
+      { name:"Objetiva: actividades y técnicas", kws:["objetiva","actividades","tecnicas","instrumentos"], hint:"la objetiva son las actividades, técnicas e instrumentos (lo externo)" },
+      { name:"Subjetiva: la persona como sujeto",kws:["subjetiva","sujeto","persona que trabaja","persona como sujeto"], hint:"la subjetiva es el actuar de la persona como sujeto" },
+      { name:"Subjetiva es la fundamental",      kws:["fundamental","mas importante","prevalece","fundamento"], hint:"la subjetiva es el fundamento último de la dignidad del trabajo" },
+      { name:"No depende del tipo de actividad", kws:["no depende","tipo de actividad","tipo","actividad"], hint:"el valor no depende de qué se produce sino de quién lo realiza" },
+    ],
+    answer:`<p><strong>Objetiva:</strong> actividades, recursos, instrumentos y técnicas para producir bienes y servicios. Es externa, variable y material. <strong>Subjetiva:</strong> el actuar de la persona como sujeto responsable. Es estable y es el <strong>fundamento último del valor del trabajo</strong>, porque no depende del tipo de actividad sino de la dignidad del sujeto. El factor humano debe prevalecer sobre el capital.</p>` },
+  { id:14, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"dev",
+    q:"¿Qué implica respetar la dignidad del trabajo según la DSI?",
+    hint:"El principio central es una frase muy concreta. Deriva de él al menos cuatro consecuencias prácticas.",
+    concepts:[
+      { name:"Trabajo para el hombre, no al revés", kws:["para el hombre","no el hombre para","trabajo para el hombre","trabajo para"], hint:"el trabajo es para el hombre, no el hombre para el trabajo" },
+      { name:"No es mercancía ni instrumento",       kws:["mercancia","instrumento","no es mercancia"], hint:"el trabajador nunca debe ser tratado como una mercancía" },
+      { name:"Primacía del trabajador sobre el capital",kws:["primacia","trabajador","capital"], hint:"la primacía del trabajador sobre el capital" },
+      { name:"Remuneración equitativa",              kws:["remuneracion","salario","equitativa","justa"], hint:"remuneración equitativa" },
+      { name:"Derecho al descanso",                  kws:["descanso"], hint:"derecho al descanso" },
+    ],
+    answer:`<p>La dignidad del trabajo brota de quien lo realiza. <strong>El trabajo es para el hombre, no el hombre para el trabajo</strong>: el trabajador nunca es una mercancía. Respetar esto implica: <strong>primacía del trabajador sobre el capital</strong>, participación en los beneficios, <strong>remuneración equitativa</strong>, condiciones para el desarrollo integral y <strong>derecho al descanso</strong>.</p>` },
+  { id:15, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"dev",
+    q:"¿Qué es un código deontológico? Origen del término y elementos que lo componen.",
+    hint:"Hay un nombre propio clave que memorizar. Luego describe qué contiene y para qué sirve exactamente.",
+    concepts:[
+      { name:"Jeremy Bentham",               kws:["bentham","jeremy bentham"], hint:"el término fue acuñado por Jeremy Bentham" },
+      { name:"Ética aplicada a la profesión", kws:["etica aplicada","profesion","profesional"], hint:"es una ética aplicada que regula los deberes profesionales" },
+      { name:"Normas de actuación",           kws:["normas","actuacion"], hint:"recoge principios y normas de actuación" },
+      { name:"Quejas, infracciones, sanciones",kws:["quejas","infracciones","sanciones"], hint:"incluye sistema de quejas, tipificación de infracciones y sanciones" },
+      { name:"Complementa la legislación",    kws:["complementa","legislacion"], hint:"complementa (no sustituye) la legislación vigente" },
+    ],
+    answer:`<p>Término acuñado por <strong>Jeremy Bentham</strong>. La deontología regula los deberes profesionales y los plasma en normas de conducta. Un código deontológico incluye: <strong>normas de actuación</strong>, sistema de consultas y <strong>quejas</strong>, tipificación de <strong>infracciones</strong> y procedimiento de <strong>sanciones</strong>. Protege a usuarios, regula la conducta y <strong>complementa</strong> (no sustituye) la legislación.</p>` },
+
+  // ── PREGUNTAS ADICIONALES ──────────────────────────────────────────────────
+  { id:16, block:1, blockName:"Bloque 1 — DSI", color:"#2563EB", type:"dev",
+    q:"¿Cuál es la relación entre la DSI y la evangelización?",
+    hint:"¿La DSI es algo separado de la misión de la Iglesia o forma parte de ella? ¿Qué quiere decir que 'ilumina la vida social con el Evangelio'?",
+    concepts:[
+      { name:"Parte del ministerio evangelizador", kws:["ministerio evangelizador","evangelizacion","evangelizador","parte integrante"], hint:"es parte integrante del ministerio evangelizador" },
+      { name:"Ilumina la vida social con el Evangelio", kws:["evangelio","ilumina","vida social"], hint:"ilumina la vida social con el Evangelio" },
+      { name:"Evangelización y promoción humana", kws:["promocion humana","promocion"], hint:"nace del vínculo entre evangelización y promoción humana" },
+      { name:"Dignidad humana y ley moral",       kws:["dignidad humana","ley moral"], hint:"busca que las estructuras respeten la dignidad humana y la ley moral" },
+    ],
+    answer:`<p>La DSI <strong>no es algo externo a la evangelización</strong>: constituye parte integrante del <strong>ministerio evangelizador</strong> de la Iglesia. Nace del vínculo entre evangelización y <strong>promoción humana</strong>: la Iglesia quiere "fecundar" la sociedad con la luz del mensaje cristiano, iluminando la vida social con el Evangelio y orientando comportamientos y estructuras hacia la dignidad humana y la ley moral.</p>` },
+
+  { id:17, block:2, blockName:"Bloque 2 — La Persona", color:"#7C3AED", type:"dev",
+    q:"¿En qué se diferencian la dignidad ontológica y la dignidad moral?",
+    hint:"Piensa en cuál depende de algo externo y cuál no. ¿Cuál puede aumentar o disminuir? ¿Cuál es permanente?",
+    concepts:[
+      { name:"Ontológica: por ser amada por Dios", kws:["ontologica","amada por dios","dios","por ser"], hint:"la ontológica se basa en ser querida y amada por Dios" },
+      { name:"Ontológica es inalienable",           kws:["inalienable","permanente","nunca puede"], hint:"la ontológica es inalienable: nunca puede perderse" },
+      { name:"Moral: depende del ejercicio de la libertad", kws:["moral","actos","ejercicio de la libertad","libertad"], hint:"la moral depende del ejercicio de la libertad y los actos realizados" },
+      { name:"Moral puede degradarse",              kws:["degradarse","puede degradar","disminuir","reducirse"], hint:"la moral puede degradarse con malos actos" },
+    ],
+    answer:`<p><strong>Dignidad ontológica:</strong> valor intrínseco por ser querida y amada por Dios. Es la única <strong>inalienable</strong>: permanece independientemente de cualquier acto o circunstancia. <strong>Dignidad moral:</strong> depende del <strong>ejercicio de la libertad</strong>. Una persona puede degradar su dignidad moral actuando contra el bien. A diferencia de la ontológica, esta puede aumentar o disminuir según los actos realizados.</p>` },
+
+  { id:18, block:2, blockName:"Bloque 2 — La Persona", color:"#7C3AED", type:"dev",
+    q:"¿Por qué la objeción de conciencia no es lo mismo que desobediencia arbitraria?",
+    hint:"¿Qué hace que una negativa sea objeción de conciencia y no simplemente 'no me da la gana'? ¿Qué papel juega la ley moral?",
+    concepts:[
+      { name:"Responde a la ley moral",          kws:["ley moral","moral","principio moral"], hint:"responde a una contradicción con la ley moral, no a un capricho" },
+      { name:"No es capricho personal",          kws:["no es capricho","no arbitraria","no es arbitraria","principio"], hint:"no es desobediencia arbitraria sino principiada" },
+      { name:"Contradicción con ley injusta",    kws:["contradiccion","ley injusta","injusta","contradice"], hint:"surge cuando la ley civil contradice la ley moral" },
+      { name:"Deber de negarse a lo moralmente ilícito", kws:["deber","ilicito","moralmente ilicito","negarse"], hint:"es un deber negarse a colaborar en acciones moralmente ilícitas" },
+    ],
+    answer:`<p>La objeción de conciencia no es desobediencia arbitraria porque <strong>no nace de un capricho personal</strong>, sino de una contradicción real entre la ley civil y la <strong>ley moral</strong>. La persona actúa por principios, no por interés. Es más: negarse no es solo un derecho, es un <strong>deber</strong>: la persona moralmente recta no puede prestarse a colaborar en acciones moralmente ilícitas aunque estén legalmente permitidas.</p>` },
+
+  { id:19, block:1, blockName:"Bloque 1 — DSI", color:"#2563EB", type:"dev",
+    q:"Explica el principio de subsidiaridad y el de participación. ¿Cómo se complementan?",
+    hint:"Cada uno protege algo diferente pero apuntan al mismo objetivo: que la persona no sea aplastada por el sistema. Explica los dos y luego la relación.",
+    concepts:[
+      { name:"Subsidiaridad: instancias superiores ayudan sin reemplazar", kws:["subsidiaridad","sin reemplazar","ayudan","instancias superiores"], hint:"las instancias superiores ayudan a las inferiores sin reemplazarlas" },
+      { name:"Participación: derecho y deber de contribuir", kws:["participacion","derecho y deber","contribuir"], hint:"todos tienen derecho y deber de contribuir a la vida social" },
+      { name:"Protegen la iniciativa personal / libertad", kws:["iniciativa","libertad","personal","autonomia"], hint:"ambas protegen la iniciativa personal y la autonomía" },
+      { name:"Complementarias entre sí", kws:["complementarias","complementan","relacionadas","juntas"], hint:"son complementarias: la subsidiaridad protege el espacio y la participación lo llena" },
+    ],
+    answer:`<p><strong>Subsidiaridad:</strong> las instancias superiores ayudan a las inferiores <strong>sin reemplazarlas</strong>, protegiendo la libertad e iniciativa personal y de los cuerpos intermedios. <strong>Participación:</strong> todos tienen <strong>derecho y deber</strong> de contribuir a la vida cultural, económica y política. Se complementan: la subsidiaridad garantiza que el Estado no absorba todo el espacio de decisión, y la participación lo llena con la iniciativa activa de los ciudadanos.</p>` },
+
+  { id:20, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"dev",
+    q:"¿En qué se fundamenta el derecho al desarrollo de los pueblos según la DSI?",
+    hint:"No es solo una cuestión económica. Hay varios pilares que lo sostienen y que conectan con otros principios ya vistos.",
+    concepts:[
+      { name:"Unidad de la familia humana",       kws:["familia humana","unidad","origen comun"], hint:"la unidad de origen y destino de la familia humana" },
+      { name:"Igualdad entre personas y pueblos", kws:["igualdad","pueblos","personas y pueblos"], hint:"la igualdad entre personas y pueblos" },
+      { name:"Destino universal de los bienes",   kws:["destino universal","bienes"], hint:"el destino universal de los bienes" },
+      { name:"Centralidad de la persona",         kws:["centralidad","persona","centralidad de la persona"], hint:"la centralidad de la persona" },
+      { name:"Solidaridad",                       kws:["solidaridad"], hint:"la solidaridad" },
+    ],
+    answer:`<p>El derecho al desarrollo se funda en: la <strong>unidad de origen y destino de la familia humana</strong>, la <strong>igualdad entre personas y pueblos</strong>, el <strong>destino universal de los bienes</strong>, la <strong>integridad del desarrollo</strong>, la <strong>centralidad de la persona</strong> y la <strong>solidaridad</strong>. La comunidad internacional tiene el deber de eliminar la pobreza, aliviar la deuda externa y promover el crecimiento integral de todos los pueblos.</p>` },
+
+  { id:21, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"dev",
+    q:"¿Qué derechos concretos incluyen los derechos humanos según la DSI? ¿Se extienden solo a las personas individuales?",
+    hint:"Enumera al menos 4 derechos específicos. Y recuerda que la DSI va un paso más allá de las personas individuales.",
+    concepts:[
+      { name:"Derecho a la vida (desde la concepción)", kws:["vida","concepcion"], hint:"derecho a la vida desde la concepción" },
+      { name:"Derecho a la familia",                    kws:["familia","vivir en familia"], hint:"derecho a vivir en familia" },
+      { name:"Derecho al trabajo",                      kws:["trabajo","trabajar"], hint:"derecho al trabajo para obtener sustento" },
+      { name:"Derecho a la propia fe",                  kws:["fe","religion","propia fe","creencia"], hint:"derecho a vivir la propia fe" },
+      { name:"Derechos de los pueblos",                 kws:["pueblos","naciones","autogobierno","cultura","lengua"], hint:"los derechos se extienden también a los pueblos" },
+    ],
+    answer:`<p>Incluyen el derecho a la <strong>vida desde la concepción</strong>, a vivir en <strong>familia</strong>, a madurar la inteligencia y la libertad, a <strong>trabajar</strong> para obtener sustento, a fundar una familia y a vivir la <strong>propia fe</strong>. Y van más allá: también los <strong>pueblos y naciones</strong> tienen derechos: a existir, a tener lengua y cultura propias, a <strong>autogobernarse</strong>, a educar a sus hijos y a vivir en paz.</p>` },
+
+  { id:22, block:2, blockName:"Bloque 2 — La Persona", color:"#7C3AED", type:"dev",
+    q:"¿Por qué el ser humano necesita vivir en sociedad? ¿Qué significa que es 'social por naturaleza'?",
+    hint:"Conecta con la dimensión de sociabilidad de la persona. ¿Qué pierde o no puede lograr si vive solo? ¿Eso le quita identidad propia?",
+    concepts:[
+      { name:"Social y político por naturaleza", kws:["social por naturaleza","politico por naturaleza","natural","naturaleza"], hint:"el ser humano es social y político por naturaleza" },
+      { name:"Necesita a los demás para desarrollarse", kws:["necesita a los demas","necesita","demas","desarrollo"], hint:"necesita integrarse y colaborar con los demás para desarrollarse" },
+      { name:"Sin renunciar a su identidad",    kws:["sin renunciar","identidad","propia identidad"], hint:"pero sin renunciar a su propia identidad" },
+      { name:"La sociedad permite lograr fines comunes", kws:["fines comunes","fines","comunes","lograr"], hint:"la vida social permite alcanzar fines que nadie puede lograr solo" },
+    ],
+    answer:`<p>El ser humano es <strong>social y político por naturaleza</strong>: la vida social no es una opción, es una dimensión esencial e ineludible de su ser. Necesita <strong>integrarse y colaborar con los demás</strong> para alcanzar su plena realización, ya que hay fines que nadie puede lograr por sí solo. Sin embargo, esta dimensión social no lo disuelve en el grupo: la persona mantiene <strong>su propia identidad</strong> y no puede renunciar a ella.</p>` },
 ];
 
 // ── BUILD STUDY ───────────────────────────────────────────────────────────────
@@ -681,6 +840,7 @@ function updateProgress(){
   document.getElementById('prog-label').textContent=`${done} de ${total} completadas`;
   document.getElementById('prog-pct').textContent=pct+'%';
   document.getElementById('hdr-done').textContent=done;
+  document.getElementById('hdr-left').textContent = deck.length;
 }
 function updateDeckCount(){const n=deck.length;document.getElementById('deck-count-txt').textContent=n===1?'1 tarjeta':`${n} tarjetas`;}
 function updateShadows(){document.getElementById('shadow1').style.display=deck.length>1?'block':'none';document.getElementById('shadow2').style.display=deck.length>2?'block':'none';}
