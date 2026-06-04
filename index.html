@@ -9,32 +9,21 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --navy: #1F4E79; --blue: #2E75B6;
-  --b1: #2563EB; --b2: #7C3AED; --b3: #059669;
   --success: #10B981; --error: #EF4444; --warn: #F59E0B;
-  --bg: #0F172A; --card-bg: #1E293B; --card-front: #FFFFFF;
-  --text: #1E293B; --muted: #64748B; --border: #E2E8F0;
+  --bg: #0F172A; --text: #1E293B; --border: #E2E8F0;
 }
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
-  background: var(--bg);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  color: var(--text);
-  overflow-x: hidden;
+  background: var(--bg); min-height: 100vh;
+  display: flex; flex-direction: column; color: var(--text); overflow-x: hidden;
 }
 
 /* ── HEADER ── */
 header {
-  background: rgba(15,23,42,.95);
-  backdrop-filter: blur(10px);
-  padding: 14px 24px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  border-bottom: 1px solid rgba(255,255,255,.06);
-  position: sticky; top: 0; z-index: 10;
+  background: rgba(15,23,42,.95); backdrop-filter: blur(10px);
+  padding: 14px 24px; display: flex; align-items: center; gap: 16px;
+  border-bottom: 1px solid rgba(255,255,255,.06); position: sticky; top: 0; z-index: 10;
 }
 .logo { color: white; font-weight: 800; font-size: 15px; margin-right: auto; }
 .logo span { color: #60A5FA; }
@@ -42,243 +31,197 @@ header {
 .hdr-stat strong { color: white; }
 
 /* ── PROGRESS ── */
-.progress-wrap { padding: 16px 24px 0; }
-.progress-track {
-  height: 6px; background: rgba(255,255,255,.08);
-  border-radius: 10px; overflow: hidden;
-}
+.progress-wrap { padding: 16px 24px 0; width: 100%; max-width: 680px; margin: 0 auto; }
+.progress-track { height: 6px; background: rgba(255,255,255,.08); border-radius: 10px; overflow: hidden; }
 .progress-fill {
   height: 100%; border-radius: 10px;
   background: linear-gradient(90deg, #2563EB, #7C3AED);
   transition: width .5s cubic-bezier(.4,0,.2,1);
 }
-.progress-labels {
-  display: flex; justify-content: space-between;
-  margin-top: 8px; font-size: 12px; color: rgba(255,255,255,.4);
-}
+.progress-labels { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; color: rgba(255,255,255,.4); }
 
 /* ── STAGE ── */
-.stage {
-  flex: 1; display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 32px 20px 24px; position: relative;
-}
+.stage { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 28px 20px 24px; }
 
-/* ── STACK SHADOWS ── */
-.stack-wrap { position: relative; width: 100%; max-width: 640px; }
-.stack-shadow {
-  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-  width: 94%; height: 100%;
-  background: rgba(255,255,255,.04);
-  border-radius: 20px;
-  border: 1px solid rgba(255,255,255,.06);
-}
-.stack-shadow-1 { top: -8px; width: 92%; }
-.stack-shadow-2 { top: -16px; width: 88%; opacity: .5; }
+/* ── STACK ── */
+.stack-wrap { position: relative; width: 100%; max-width: 680px; }
+.stack-shadow { position: absolute; top: 0; left: 50%; transform: translateX(-50%); height: 100%; background: rgba(255,255,255,.04); border-radius: 20px; border: 1px solid rgba(255,255,255,.06); }
+.stack-shadow-1 { top: -8px; width: 93%; }
+.stack-shadow-2 { top: -16px; width: 87%; opacity: .5; }
 
 /* ── CARD ── */
 .card {
-  background: white;
-  border-radius: 20px;
-  padding: 36px;
-  box-shadow: 0 24px 80px rgba(0,0,0,.5);
-  position: relative;
-  z-index: 2;
-  border-top: 6px solid var(--block-color, #2563EB);
-  transition: transform .15s;
+  background: white; border-radius: 20px; padding: 32px;
+  box-shadow: 0 24px 80px rgba(0,0,0,.5); position: relative; z-index: 2;
+  border-top: 6px solid var(--block-color, #2563EB); transition: transform .15s;
 }
 .card.shake { animation: shake .4s ease; }
-.card.exit-left { animation: exitLeft .3s ease forwards; }
-.card.exit-right { animation: exitRight .3s ease forwards; }
-.card.enter { animation: enterCard .3s ease forwards; }
+.card.exit-left  { animation: exitLeft  .28s ease forwards; }
+.card.exit-right { animation: exitRight .28s ease forwards; }
+.card.enter      { animation: enterCard .3s  ease forwards; }
 
-@keyframes shake {
-  0%,100%{transform:translateX(0)} 20%{transform:translateX(-10px)} 40%{transform:translateX(10px)}
-  60%{transform:translateX(-8px)} 80%{transform:translateX(8px)}
-}
-@keyframes exitLeft {
-  to { transform: translateX(-120%) rotate(-8deg); opacity: 0; }
-}
-@keyframes exitRight {
-  to { transform: translateX(120%) rotate(8deg); opacity: 0; }
-}
-@keyframes enterCard {
-  from { transform: translateY(30px) scale(.96); opacity: 0; }
-  to { transform: translateY(0) scale(1); opacity: 1; }
-}
+@keyframes shake    { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-10px)} 40%{transform:translateX(10px)} 60%{transform:translateX(-8px)} 80%{transform:translateX(8px)} }
+@keyframes exitLeft  { to { transform: translateX(-120%) rotate(-8deg); opacity:0; } }
+@keyframes exitRight { to { transform: translateX(120%)  rotate(8deg);  opacity:0; } }
+@keyframes enterCard { from { transform: translateY(30px) scale(.96); opacity:0; } to { transform:none; opacity:1; } }
 
-.card-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 1px; color: var(--block-color, #2563EB);
-  margin-bottom: 16px;
-}
+.card-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--block-color, #2563EB); margin-bottom: 14px; }
 .badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--block-color, #2563EB); }
+.card-q { font-size: clamp(16px,3vw,21px); font-weight: 700; line-height: 1.45; color: #0F172A; margin-bottom: 24px; }
 
-.card-q {
-  font-size: clamp(17px, 3vw, 22px);
-  font-weight: 700; line-height: 1.45;
-  color: #0F172A; margin-bottom: 28px;
-}
-
-/* ── OPTIONS (test) ── */
+/* ── TEST OPTIONS ── */
 .options { display: flex; flex-direction: column; gap: 10px; }
 .opt {
   display: flex; align-items: flex-start; gap: 14px;
-  background: #F8FAFC; border: 2px solid #E2E8F0;
-  border-radius: 12px; padding: 14px 16px;
-  cursor: pointer; font-size: 14px; font-weight: 500;
-  transition: all .15s; text-align: left; font-family: inherit;
-  color: #1E293B; line-height: 1.4;
+  background: #F8FAFC; border: 2px solid #E2E8F0; border-radius: 12px;
+  padding: 13px 16px; cursor: pointer; font-size: 14px; font-weight: 500;
+  transition: all .15s; text-align: left; font-family: inherit; color: #1E293B; line-height: 1.4;
 }
 .opt:hover:not(:disabled) { border-color: #2563EB; background: #EFF6FF; }
 .opt.correct { border-color: var(--success); background: #ECFDF5; color: #065F46; }
 .opt.wrong   { border-color: var(--error);   background: #FEF2F2; color: #991B1B; }
 .opt:disabled { cursor: default; }
 .opt-l {
-  width: 26px; height: 26px; border-radius: 8px;
-  background: #E2E8F0; color: #64748B;
-  font-size: 11px; font-weight: 700;
-  display: flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 8px; background: #E2E8F0; color: #64748B;
+  font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; transition: all .15s;
 }
 .correct .opt-l { background: var(--success); color: white; }
 .wrong   .opt-l { background: var(--error);   color: white; }
 
-/* ── FEEDBACK ── */
-.feedback {
-  margin-top: 18px; padding: 13px 16px; border-radius: 10px;
-  font-size: 13px; font-weight: 500; display: none; line-height: 1.5;
-}
+.feedback { margin-top: 16px; padding: 12px 15px; border-radius: 10px; font-size: 13px; font-weight: 500; display: none; line-height: 1.5; }
 .feedback.ok   { display: block; background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; }
 .feedback.fail { display: block; background: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; }
 
-/* ── DEV MODE ── */
-.dev-hint {
-  background: #F1F5F9; border-radius: 10px; padding: 13px 16px;
-  font-size: 13px; color: #475569; line-height: 1.6; margin-bottom: 20px;
-}
+/* ── DEV ── */
+.dev-hint { background: #F1F5F9; border-radius: 10px; padding: 12px 15px; font-size: 13px; color: #475569; line-height: 1.6; margin-bottom: 18px; }
 .dev-hint strong { color: #0F172A; }
 
-.btn-reveal {
-  width: 100%; background: var(--navy); color: white;
-  border: none; padding: 15px; border-radius: 12px;
-  font-size: 15px; font-weight: 600; cursor: pointer;
-  font-family: inherit; transition: background .2s;
+/* textarea */
+.dev-textarea {
+  width: 100%; min-height: 160px; border: 2px solid #E2E8F0; border-radius: 12px;
+  padding: 14px; font-family: inherit; font-size: 14px; color: #1E293B;
+  line-height: 1.6; resize: vertical; background: #FAFAFA; outline: none;
+  transition: border-color .2s; margin-bottom: 12px;
 }
-.btn-reveal:hover { background: var(--blue); }
+.dev-textarea:focus { border-color: #2563EB; background: white; }
+.dev-textarea::placeholder { color: #94A3B8; }
 
-.dev-answer-box {
-  background: #F0F9FF; border: 1px solid #BAE6FD;
-  border-radius: 12px; padding: 18px; font-size: 13px;
-  line-height: 1.8; margin-bottom: 18px; display: none;
+.btn-corregir {
+  width: 100%; background: var(--navy); color: white; border: none;
+  padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 700;
+  cursor: pointer; font-family: inherit; transition: background .2s;
 }
-.dev-answer-box.visible { display: block; }
-.dev-answer-box h4 { font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .8px; color: var(--blue); margin-bottom: 10px; }
-.dev-answer-box ul { padding-left: 18px; }
-.dev-answer-box li { margin-bottom: 5px; }
-.dev-answer-box p { margin-bottom: 8px; }
+.btn-corregir:hover { background: #2E75B6; }
+.btn-corregir:disabled { opacity: .5; cursor: default; }
 
-.rating-label { font-size: 13px; font-weight: 700; color: #475569; margin-bottom: 10px; }
-.rating-row { display: flex; gap: 8px; }
-.rbtn {
-  flex: 1; border: 2px solid; border-radius: 10px; padding: 11px 8px;
-  font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit;
-  transition: all .15s; display: none;
+/* ── CORRECTION RESULT ── */
+.correction-result { display: none; margin-top: 20px; }
+.correction-result.visible { display: block; }
+
+.score-header {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 18px; border-radius: 14px; margin-bottom: 16px;
+  background: #F8FAFC; border: 2px solid #E2E8F0;
 }
-.rbtn.visible { display: block; }
-.rbtn.green { background: #ECFDF5; color: #065F46; border-color: #A7F3D0; }
-.rbtn.green:hover { background: #D1FAE5; }
-.rbtn.yellow { background: #FFFBEB; color: #92400E; border-color: #FCD34D; }
-.rbtn.yellow:hover { background: #FEF3C7; }
-.rbtn.red { background: #FEF2F2; color: #991B1B; border-color: #FECACA; }
-.rbtn.red:hover { background: #FEE2E2; }
+.score-header.great { background: #ECFDF5; border-color: #A7F3D0; }
+.score-header.ok    { background: #FFFBEB; border-color: #FCD34D; }
+.score-header.bad   { background: #FEF2F2; border-color: #FECACA; }
+
+.score-circle {
+  width: 56px; height: 56px; border-radius: 50%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-weight: 800; flex-shrink: 0;
+}
+.score-circle.great { background: #D1FAE5; color: #065F46; }
+.score-circle.ok    { background: #FEF3C7; color: #92400E; }
+.score-circle.bad   { background: #FEE2E2; color: #991B1B; }
+.score-circle .sc-n { font-size: 18px; line-height: 1; }
+.score-circle .sc-d { font-size: 10px; opacity: .7; }
+
+.score-info .si-title { font-size: 15px; font-weight: 700; color: #0F172A; }
+.score-info .si-sub   { font-size: 13px; color: #64748B; margin-top: 2px; }
+
+/* concept list */
+.concept-list { list-style: none; display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px; }
+.concept-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 13px; border-radius: 10px; font-size: 13px;
+}
+.concept-item.hit  { background: #ECFDF5; color: #065F46; }
+.concept-item.miss { background: #FEF2F2; color: #991B1B; }
+.ci-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.ci-name { font-weight: 600; }
+.ci-kw   { font-size: 11px; opacity: .7; margin-top: 2px; }
+
+/* model answer */
+.model-toggle {
+  width: 100%; background: none; border: 1px solid #E2E8F0; color: #475569;
+  padding: 10px 14px; border-radius: 10px; font-size: 13px; font-weight: 600;
+  cursor: pointer; font-family: inherit; text-align: left; transition: all .2s;
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
+}
+.model-toggle:hover { background: #F8FAFC; }
+.model-answer-box {
+  background: #F0F9FF; border: 1px solid #BAE6FD; border-radius: 12px;
+  padding: 16px; font-size: 13px; line-height: 1.8; display: none; margin-bottom: 16px;
+}
+.model-answer-box.visible { display: block; }
+.model-answer-box h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: #2E75B6; margin-bottom: 10px; }
+.model-answer-box ul { padding-left: 18px; }
+.model-answer-box li { margin-bottom: 5px; }
+.model-answer-box p  { margin-bottom: 8px; }
+
+/* action buttons */
+.result-actions { display: flex; gap: 10px; }
+.btn-pass-ok {
+  flex: 1; background: var(--success); color: white; border: none;
+  padding: 13px; border-radius: 12px; font-size: 14px; font-weight: 700;
+  cursor: pointer; font-family: inherit; transition: opacity .2s;
+}
+.btn-pass-ok:hover { opacity: .85; }
+.btn-retry {
+  flex: 1; background: #F1F5F9; color: #475569; border: 2px solid #E2E8F0;
+  padding: 11px; border-radius: 12px; font-size: 14px; font-weight: 700;
+  cursor: pointer; font-family: inherit; transition: all .2s;
+}
+.btn-retry:hover { border-color: #94A3B8; color: #1E293B; }
+
+/* ── NOTA ── */
+.nota-box { background: #FFFBEB; border: 1px solid #FCD34D; border-left: 4px solid #F59E0B; border-radius: 10px; padding: 10px 14px; font-size: 13px; color: #92400E; margin-bottom: 16px; display: flex; gap: 8px; }
 
 /* ── BOTTOM BAR ── */
-.bottom-bar {
-  display: flex; align-items: center; justify-content: space-between;
-  width: 100%; max-width: 640px; margin-top: 20px;
-}
-.deck-count {
-  display: flex; align-items: center; gap: 8px;
-  color: rgba(255,255,255,.4); font-size: 13px;
-}
-.deck-icon { font-size: 18px; }
-
-.btn-skip {
-  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
-  color: rgba(255,255,255,.5); padding: 10px 20px; border-radius: 10px;
-  font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit;
-  transition: all .2s;
-}
+.bottom-bar { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 680px; margin-top: 18px; }
+.deck-count { display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,.4); font-size: 13px; }
+.btn-skip { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); color: rgba(255,255,255,.5); padding: 10px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all .2s; }
 .btn-skip:hover { background: rgba(255,255,255,.1); color: white; }
 
-/* ── END SCREEN ── */
-.end-screen {
-  display: none; flex-direction: column; align-items: center;
-  justify-content: center; flex: 1; padding: 40px 20px; text-align: center;
-}
+/* ── START ── */
+.start-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 40px 20px; text-align: center; }
+.start-title { font-size: clamp(28px,6vw,48px); font-weight: 800; color: white; margin-bottom: 12px; }
+.start-sub { font-size: 16px; color: rgba(255,255,255,.5); margin-bottom: 40px; max-width: 480px; }
+.start-info { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 36px; }
+.si-card { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 12px; padding: 16px 20px; min-width: 140px; }
+.si-card .n { font-size: 28px; font-weight: 800; color: white; display: block; }
+.si-card .l { font-size: 12px; color: rgba(255,255,255,.4); }
+.btn-start { background: linear-gradient(135deg, #2563EB, #7C3AED); color: white; border: none; padding: 18px 48px; border-radius: 14px; font-size: 17px; font-weight: 700; cursor: pointer; font-family: inherit; box-shadow: 0 8px 32px rgba(37,99,235,.4); transition: opacity .2s, transform .2s; }
+.btn-start:hover { opacity: .9; transform: translateY(-2px); }
+.start-rule { font-size: 13px; color: rgba(255,255,255,.35); margin-top: 16px; max-width: 380px; }
+
+/* ── END ── */
+.end-screen { display: none; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 40px 20px; text-align: center; }
 .end-screen.visible { display: flex; }
 .end-emoji { font-size: 64px; margin-bottom: 16px; }
 .end-title { font-size: 32px; font-weight: 800; color: white; margin-bottom: 8px; }
-.end-sub { font-size: 16px; color: rgba(255,255,255,.5); margin-bottom: 36px; max-width: 400px; }
-.end-stats {
-  display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 36px;
-}
-.end-stat {
-  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
-  border-radius: 14px; padding: 18px 28px;
-}
+.end-sub   { font-size: 16px; color: rgba(255,255,255,.5); margin-bottom: 36px; max-width: 400px; }
+.end-stats { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 36px; }
+.end-stat  { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: 18px 28px; }
 .end-stat .n { font-size: 36px; font-weight: 800; color: white; display: block; }
 .end-stat .l { font-size: 12px; color: rgba(255,255,255,.4); text-transform: uppercase; letter-spacing: 1px; }
-.btn-restart {
-  background: linear-gradient(135deg, #2563EB, #7C3AED);
-  color: white; border: none; padding: 16px 40px; border-radius: 14px;
-  font-size: 16px; font-weight: 700; cursor: pointer; font-family: inherit;
-  transition: opacity .2s; box-shadow: 0 8px 32px rgba(37,99,235,.4);
-}
+.btn-restart { background: linear-gradient(135deg, #2563EB, #7C3AED); color: white; border: none; padding: 16px 40px; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; font-family: inherit; transition: opacity .2s; box-shadow: 0 8px 32px rgba(37,99,235,.4); }
 .btn-restart:hover { opacity: .9; }
 
-/* ── NOTA BOX ── */
-.nota-box {
-  background: #FFFBEB; border: 1px solid #FCD34D; border-left: 4px solid #F59E0B;
-  border-radius: 10px; padding: 10px 14px; font-size: 13px; color: #92400E;
-  margin-bottom: 18px; display: flex; gap: 8px;
-}
-
-/* ── START SCREEN ── */
-.start-screen {
-  display: flex; flex-direction: column; align-items: center;
-  justify-content: center; flex: 1; padding: 40px 20px; text-align: center;
-}
-.start-title { font-size: clamp(28px,6vw,48px); font-weight: 800; color: white; margin-bottom: 12px; }
-.start-sub { font-size: 16px; color: rgba(255,255,255,.5); margin-bottom: 40px; max-width: 480px; }
-.start-info {
-  display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 36px;
-}
-.si-card {
-  background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
-  border-radius: 12px; padding: 16px 20px; min-width: 140px;
-}
-.si-card .n { font-size: 28px; font-weight: 800; color: white; display: block; }
-.si-card .l { font-size: 12px; color: rgba(255,255,255,.4); }
-.btn-start {
-  background: linear-gradient(135deg, #2563EB, #7C3AED);
-  color: white; border: none; padding: 18px 48px; border-radius: 14px;
-  font-size: 17px; font-weight: 700; cursor: pointer; font-family: inherit;
-  box-shadow: 0 8px 32px rgba(37,99,235,.4); transition: opacity .2s, transform .2s;
-}
-.btn-start:hover { opacity: .9; transform: translateY(-2px); }
-.start-rule {
-  font-size: 13px; color: rgba(255,255,255,.35); margin-top: 16px; max-width: 380px;
-}
-
-@media(max-width:600px){
-  .card { padding: 24px; }
-  header { padding: 12px 16px; }
-  .logo { font-size: 13px; }
-}
+@media(max-width:600px){ .card{padding:22px;} header{padding:12px 16px;} }
 </style>
 </head>
 <body>
@@ -292,26 +235,21 @@ header {
 <!-- START -->
 <div class="start-screen" id="start-screen">
   <div class="start-title">Flashcards de Examen</div>
-  <div class="start-sub">Responde correctamente cada tarjeta para superarla. Si fallas, vuelve al mazo. Puedes pasar si lo necesitas.</div>
+  <div class="start-sub">Responde correctamente cada tarjeta para superarla. Si fallas, vuelve al mazo. Las de desarrollo se corrigen automáticamente.</div>
   <div class="start-info">
     <div class="si-card"><span class="n">15</span><span class="l">Tarjetas</span></div>
     <div class="si-card"><span class="n">12</span><span class="l">Test</span></div>
     <div class="si-card"><span class="n">3</span><span class="l">Desarrollo</span></div>
   </div>
   <button class="btn-start" onclick="startDeck()">Empezar</button>
-  <div class="start-rule">Las tarjetas falladas vuelven al mazo. Solo se desbloquea la siguiente al responder bien.</div>
+  <div class="start-rule">Las tarjetas falladas vuelven al mazo. En desarrollo, el algoritmo detecta los conceptos clave en tu respuesta.</div>
 </div>
 
 <!-- GAME -->
 <div id="game" style="display:none; flex-direction:column; align-items:center; flex:1;">
-  <div class="progress-wrap" style="width:100%; max-width:640px;">
-    <div class="progress-track">
-      <div class="progress-fill" id="prog-fill" style="width:0%"></div>
-    </div>
-    <div class="progress-labels">
-      <span id="prog-label">0 de 15 completadas</span>
-      <span id="prog-pct">0%</span>
-    </div>
+  <div class="progress-wrap">
+    <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="progress-labels"><span id="prog-label">0 de 15 completadas</span><span id="prog-pct">0%</span></div>
   </div>
   <div class="stage">
     <div class="stack-wrap" id="stack-wrap">
@@ -320,10 +258,7 @@ header {
       <div class="card" id="main-card"></div>
     </div>
     <div class="bottom-bar">
-      <div class="deck-count">
-        <span class="deck-icon">🂠</span>
-        <span id="deck-count-txt">15 tarjetas en el mazo</span>
-      </div>
+      <div class="deck-count">🂠 <span id="deck-count-txt">15 tarjetas</span></div>
       <button class="btn-skip" onclick="skipCard()">Pasar →</button>
     </div>
   </div>
@@ -336,44 +271,52 @@ header {
   <div class="end-sub">Has respondido correctamente todas las tarjetas.</div>
   <div class="end-stats">
     <div class="end-stat"><span class="n" id="end-done">15</span><span class="l">Completadas</span></div>
-    <div class="end-stat"><span class="n" id="end-fails">0</span><span class="l">Fallos totales</span></div>
+    <div class="end-stat"><span class="n" id="end-fails">0</span><span class="l">Fallos</span></div>
     <div class="end-stat"><span class="n" id="end-passes">0</span><span class="l">Pasadas</span></div>
   </div>
   <button class="btn-restart" onclick="restartDeck()">Repetir mazo</button>
 </div>
 
 <script>
-// ── DATA ─────────────────────────────────────────────────────────────────────
+// ── NORMALIZER ────────────────────────────────────────────────────────────────
+function norm(str) {
+  return str.toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ').trim();
+}
+function hasKw(text, keywords) {
+  const t = norm(text);
+  return keywords.some(kw => t.includes(norm(kw)));
+}
+
+// ── DATA ──────────────────────────────────────────────────────────────────────
 const CARDS = [
   {
     id:1, block:1, blockName:"Bloque 1 — DSI", color:"#2563EB", type:"test",
     q:"¿Qué es la doctrina social de la Iglesia?",
-    nota:null,
-    opts:[
-      "Una propuesta política o económica alternativa",
-      "El estudio de las implicaciones éticas de los proyectos políticos y económicos, formulado como enseñanza moral",
-      "Una ideología intermedia entre el capitalismo y el comunismo",
-      "Un partido político cristiano"
-    ], ans:1,
-    exp:"La DSI NO es ideología ni propuesta política. Es enseñanza moral ante la cuestión social surgida con la revolución industrial."
+    opts:["Una propuesta política o económica alternativa","El estudio de las implicaciones éticas de los proyectos políticos y económicos, formulado como enseñanza moral","Una ideología intermedia entre el capitalismo y el comunismo","Un partido político cristiano"],
+    ans:1, exp:"La DSI NO es ideología ni propuesta política. Es enseñanza moral ante la cuestión social surgida con la revolución industrial."
   },
   {
     id:2, block:1, blockName:"Bloque 1 — DSI", color:"#2563EB", type:"test",
     q:"¿A quién va dirigida la DSI y cuál es su finalidad?",
-    nota:null,
-    opts:[
-      "Solo a los sacerdotes y religiosos",
-      "Solo a los países pobres",
-      "A los católicos y a todas las personas de buena voluntad, para transformar las estructuras a la luz de la justicia",
-      "Solo a los gobiernos cristianos"
-    ], ans:2,
-    exp:"La DSI se dirige a todos los católicos y a personas de buena voluntad. Su fin es orientar la acción para transformar estructuras económicas, políticas y culturales."
+    opts:["Solo a los sacerdotes y religiosos","Solo a los países pobres","A los católicos y a todas las personas de buena voluntad, para transformar las estructuras a la luz de la justicia","Solo a los gobiernos cristianos"],
+    ans:2, exp:"La DSI se dirige a todos los católicos y a personas de buena voluntad. Su fin es orientar la acción para transformar estructuras económicas, políticas y culturales."
   },
   {
     id:3, block:1, blockName:"Bloque 1 — DSI", color:"#2563EB", type:"dev",
     q:"Explica los principios permanentes de la doctrina social de la Iglesia",
     nota:"Son exactamente 6. Nómbralos todos y explica brevemente cada uno.",
-    hint:"Hay <strong>6 principios</strong> que forman el armazón de toda la enseñanza social católica. Piensa en el valor de la persona, los bienes, la comunidad, las relaciones entre niveles, la participación y la interdependencia.",
+    hint:"Hay <strong>6 principios</strong> que forman el armazón de toda la enseñanza social católica. Piensa en: el valor de la persona, los bienes de la tierra, la comunidad, las relaciones entre niveles, la participación y la interdependencia.",
+    concepts:[
+      { name:"Dignidad de la persona",          kws:["dignidad","valor intrinseco","valor de la persona"], hint:"el valor intrínseco de toda persona" },
+      { name:"Destino universal de los bienes",  kws:["destino universal","bienes","tierra para todos","propiedad privada subordinada","propiedad privada"], hint:"la tierra fue destinada al beneficio de todos" },
+      { name:"Bien común",                       kws:["bien comun","condiciones sociales","plena realizacion","realizacion de todos"], hint:"condiciones que permiten la plena realización de todos" },
+      { name:"Subsidiaridad",                    kws:["subsidiaridad","instancias superiores","ayudan sin reemplazar","sin reemplazar","cuerpos intermedios"], hint:"las instancias superiores ayudan sin reemplazar" },
+      { name:"Participación",                    kws:["participacion","derecho y deber","vida cultural","vida politica","vida economica"], hint:"derecho y deber de contribuir a la vida social" },
+      { name:"Solidaridad",                      kws:["solidaridad","interdependencia","estructuras de pecado"], hint:"transforma estructuras de pecado en estructuras de justicia" },
+    ],
     answer:`<h4>Los 6 principios permanentes</h4>
     <ul>
       <li><strong>Dignidad de la persona:</strong> valor intrínseco que fundamenta todos los derechos. Inalienable.</li>
@@ -386,33 +329,30 @@ const CARDS = [
   },
   {
     id:4, block:1, blockName:"Bloque 1 — DSI", color:"#2563EB", type:"test",
+    nota:"⚠ El error más frecuente: 1891, NO 1892.",
     q:"¿Cuál fue el primer documento expresamente dedicado a la DSI y en qué año se promulgó?",
-    nota:"⚠ El año más frecuente de error: 1891, NO 1892.",
-    opts:[
-      "Quadragesimo Anno, 1931",
-      "Rerum Novarum, León XIII, 1892",
-      "Rerum Novarum, León XIII, 1891",
-      "Gaudium et Spes, 1965"
-    ], ans:2,
-    exp:"Rerum Novarum (1891). Surge de la 'cuestión obrera' durante la revolución industrial. Defiende el salario justo, la jornada razonable y el derecho de asociación."
+    opts:["Quadragesimo Anno, 1931","Rerum Novarum, León XIII, 1892","Rerum Novarum, León XIII, 1891","Gaudium et Spes, 1965"],
+    ans:2, exp:"Rerum Novarum (1891). Surge de la 'cuestión obrera' durante la revolución industrial. Defiende el salario justo, la jornada razonable y el derecho de asociación."
   },
   {
     id:5, block:1, blockName:"Bloque 1 — DSI", color:"#2563EB", type:"test",
     q:"¿Por qué las enseñanzas sociales de la Iglesia pueden servir de inspiración a toda persona, independientemente de su religión?",
-    nota:null,
-    opts:[
-      "Porque son impuestas por el derecho internacional",
-      "Porque son exclusivas del ámbito cristiano",
-      "Porque se apoyan en la fe y en la razón natural, proponiendo principios éticos universalmente compartibles",
-      "Porque derivan de un acuerdo entre todos los Estados"
-    ], ans:2,
-    exp:"Sus fuentes son la Revelación Y la ley natural. Esto las hace compartibles por cualquier persona de buena voluntad, al margen de su religión."
+    opts:["Porque son impuestas por el derecho internacional","Porque son exclusivas del ámbito cristiano","Porque se apoyan en la fe y en la razón natural, proponiendo principios éticos universalmente compartibles","Porque derivan de un acuerdo entre todos los Estados"],
+    ans:2, exp:"Sus fuentes son la Revelación Y la ley natural. Esto las hace compartibles por cualquier persona de buena voluntad, al margen de su religión."
   },
   {
     id:6, block:2, blockName:"Bloque 2 — La Persona", color:"#7C3AED", type:"dev",
     q:"Explica las dimensiones o características de la persona según la tradición cristiana",
     nota:"Son exactamente 6 dimensiones. La persona es una unidad: no se puede aislar una de otra.",
-    hint:"Piensa en: la composición de la persona, su individualidad, su apertura, su libertad, la igualdad con otros y su necesidad de los demás. <strong>6 dimensiones</strong> en total.",
+    hint:"Piensa en: la composición de la persona, su individualidad, su apertura hacia lo que la trasciende, su libertad, la igualdad con los demás y su carácter relacional. <strong>6 dimensiones</strong> en total.",
+    concepts:[
+      { name:"Unidad cuerpo-alma",         kws:["cuerpo","alma","materia","espiritu","unidad de materia","cuerpo y alma"], hint:"unidad de materia y espíritu" },
+      { name:"Unicidad / irrepetibilidad", kws:["unicidad","irrepetible","unico","autocomprend","autoposeerse","autodeterminar","historia propia"], hint:"cada persona es irrepetible, con historia propia" },
+      { name:"Trascendencia",              kws:["trascendencia","trascend","abrirse a dios","apertura a dios","apertura al mundo"], hint:"capacidad de abrirse a los demás y a Dios" },
+      { name:"Libertad y responsabilidad", kws:["libertad","responsabilidad","ley moral","libre"], hint:"libre para dirigirse al bien, orientada por la ley moral" },
+      { name:"Igual dignidad",             kws:["igual dignidad","igualdad","misma dignidad","sin distincion","independientemente de"], hint:"misma dignidad independientemente de raza, sexo o condición" },
+      { name:"Sociabilidad",               kws:["sociabilidad","social","relacional","necesita a los demas","necesita de los demas","vida en comunidad"], hint:"el ser humano necesita de los demás sin renunciar a su identidad" },
+    ],
     answer:`<h4>Las 6 dimensiones de la persona</h4>
     <ul>
       <li><strong>Unidad cuerpo-alma:</strong> unidad de materia y espíritu. El cuerpo tiene valor y no puede despreciarse.</li>
@@ -427,7 +367,13 @@ const CARDS = [
     id:7, block:2, blockName:"Bloque 2 — La Persona", color:"#7C3AED", type:"dev",
     q:"Explica los distintos modos de entender la dignidad humana",
     nota:"Son 4 tipos. La clave es saber cuál es la única inalienable.",
-    hint:"Hay <strong>4 tipos de dignidad</strong>. Uno está ligado al ser (creación), otro a los actos, otro al entorno social y otro al sufrimiento. Concluye con la posición de la Iglesia.",
+    hint:"Hay <strong>4 tipos de dignidad</strong>: uno ligado al ser (creación por Dios), otro a los actos libres, otro al entorno social y otro al sufrimiento. Concluye qué dice la Iglesia sobre cuál es la fundamental.",
+    concepts:[
+      { name:"Dignidad ontológica (inalienable)", kws:["ontologica","inalienable","amada por dios","querida por dios","creada por dios","valor por ser"], hint:"valor por ser amada por Dios; la única inalienable" },
+      { name:"Dignidad moral",                    kws:["moral","ejercicio de la libertad","actos","degradarse","actos morales"], hint:"depende del ejercicio de la libertad; puede degradarse" },
+      { name:"Dignidad social",                   kws:["social","pobreza","marginacion","exclusion","condiciones externas"], hint:"condicionada por la pobreza o la marginación" },
+      { name:"Dignidad existencial",              kws:["existencial","sufrimiento","enfermedad","desesperanza","sin paz","sin esperanza","grave"], hint:"situaciones de sufrimiento intenso que hacen sentir a la persona privada de valor" },
+    ],
     answer:`<h4>Los 4 tipos de dignidad humana</h4>
     <ul>
       <li><strong>Ontológica:</strong> valor por ser querida y amada por Dios. Es la única <strong>inalienable</strong>: permanece más allá de cualquier circunstancia y nunca puede eliminarse.</li>
@@ -435,244 +381,217 @@ const CARDS = [
       <li><strong>Social:</strong> condicionada por circunstancias externas: pobreza, marginación, exclusión.</li>
       <li><strong>Existencial:</strong> situaciones de sufrimiento intenso (enfermedad grave, desesperanza) que hacen sentir a la persona privada de valor.</li>
     </ul>
-    <p><strong>Conclusión:</strong> la Iglesia insiste en que la dignidad ontológica es inalienable e independiente de la capacidad de comprender o actuar. Los derechos humanos deben protegerse desde la concepción hasta la muerte natural.</p>`
+    <p><strong>Conclusión:</strong> la Iglesia insiste en que la dignidad ontológica es inalienable e independiente de la capacidad de comprender o actuar.</p>`
   },
   {
     id:8, block:2, blockName:"Bloque 2 — La Persona", color:"#7C3AED", type:"test",
     q:"¿Qué es la objeción de conciencia?",
-    nota:null,
-    opts:[
-      "Un delito tipificado en el código penal",
-      "Un derecho exclusivo de los religiosos y sacerdotes",
-      "El derecho y deber de negarse a obedecer leyes civiles que contradicen la ley moral; el Estado debe reconocerlo",
-      "Una opinión personal sin valor jurídico"
-    ], ans:2,
-    exp:"Es a la vez un DEBER de conciencia y un DERECHO humano elemental. No es arbitraria: responde a una contradicción entre la ley civil y la ley moral."
+    opts:["Un delito tipificado en el código penal","Un derecho exclusivo de los religiosos y sacerdotes","El derecho y deber de negarse a obedecer leyes civiles que contradicen la ley moral; el Estado debe reconocerlo","Una opinión personal sin valor jurídico"],
+    ans:2, exp:"Es a la vez un DEBER de conciencia y un DERECHO humano elemental. No es arbitraria: responde a una contradicción entre la ley civil y la ley moral."
   },
   {
     id:9, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"test",
     q:"¿Qué son las 'estructuras de pecado' en el contexto de la cooperación internacional?",
-    nota:null,
-    opts:[
-      "Pecados individuales muy graves cometidos por políticos",
-      "Guerras entre naciones que impiden el comercio",
-      "Mecanismos económicos, financieros y sociales que impiden el desarrollo de los pueblos",
-      "Leyes civiles injustas de los países ricos"
-    ], ans:2,
-    exp:"Las estructuras de pecado son mecanismos sistémicos (no individuales) que perpetúan la pobreza y la injusticia. La cooperación internacional debe combatirlas."
+    opts:["Pecados individuales muy graves cometidos por políticos","Guerras entre naciones que impiden el comercio","Mecanismos económicos, financieros y sociales que impiden el desarrollo de los pueblos","Leyes civiles injustas de los países ricos"],
+    ans:2, exp:"Las estructuras de pecado son mecanismos sistémicos (no individuales) que perpetúan la pobreza y la injusticia."
   },
   {
     id:10, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"test",
     q:"¿Cuántas condiciones exige la doctrina de la guerra justa y cómo deben cumplirse?",
-    nota:null,
-    opts:[
-      "2 condiciones, basta con cumplir una",
-      "3 condiciones, basta con la mayoría",
-      "4 condiciones, todas simultáneamente",
-      "5 condiciones, la mitad es suficiente"
-    ], ans:2,
-    exp:"Son 4 condiciones y deben cumplirse TODAS a la vez: daño grave y cierto, agotados los medios pacíficos, probabilidad seria de éxito y proporcionalidad de los males."
+    opts:["2 condiciones, basta con cumplir una","3 condiciones, basta con la mayoría","4 condiciones, todas simultáneamente","5 condiciones, la mitad es suficiente"],
+    ans:2, exp:"Son 4 condiciones y deben cumplirse TODAS a la vez: daño grave y cierto, agotados los medios pacíficos, probabilidad seria de éxito y proporcionalidad de los males."
   },
   {
     id:11, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"test",
-    q:"¿Cuáles son las tres características esenciales de los derechos humanos según la DSI?",
-    nota:null,
-    opts:[
-      "Nacionales, relativos y negociables",
-      "Universales, inviolables e inalienables",
-      "Culturales, históricos y modificables",
-      "Civiles, políticos y económicos"
-    ], ans:1,
-    exp:"Los tres adjetivos clave son universales (para todos), inviolables (ningún poder puede suprimirlos) e inalienables (la persona no puede renunciar a ellos)."
+    q:"¿Cuáles son las tres características esenciales de los derechos humanos?",
+    opts:["Nacionales, relativos y negociables","Universales, inviolables e inalienables","Culturales, históricos y modificables","Civiles, políticos y económicos"],
+    ans:1, exp:"Los tres adjetivos clave: universales (para todos), inviolables (ningún poder puede suprimirlos) e inalienables (la persona no puede renunciar a ellos)."
   },
   {
     id:12, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"test",
     q:"¿Para qué existe la comunidad política y cuáles son los límites de la autoridad?",
-    nota:null,
-    opts:[
-      "Para ejercer el poder sobre los ciudadanos sin límites",
-      "Para gestionar exclusivamente los recursos económicos",
-      "Para alcanzar el bien común; la autoridad está limitada por el orden moral y la ley justa",
-      "Para mantener el orden público y la seguridad nacional"
-    ], ans:2,
-    exp:"La comunidad política existe para el bien común (fin que la persona no puede lograr sola). La autoridad no puede suplantar la libre iniciativa de personas y grupos."
+    opts:["Para ejercer el poder sobre los ciudadanos sin límites","Para gestionar exclusivamente los recursos económicos","Para alcanzar el bien común; la autoridad está limitada por el orden moral y la ley justa","Para mantener el orden público y la seguridad nacional"],
+    ans:2, exp:"La comunidad política existe para el bien común (fin que la persona no puede lograr sola). La autoridad no puede suplantar la libre iniciativa de personas y grupos."
   },
   {
     id:13, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"test",
-    q:"¿Qué diferencia hay entre la dimensión objetiva y subjetiva del trabajo? ¿Cuál es la fundamental?",
-    nota:null,
-    opts:[
-      "La objetiva es la fundamental: depende de lo que se produce",
-      "Son iguales en importancia; ninguna prevalece",
-      "La subjetiva es la fundamental: depende de la persona que trabaja, no del tipo de actividad",
-      "La objetiva es la fundamental: incluye los instrumentos y técnicas"
-    ], ans:2,
-    exp:"La dimensión subjetiva (la persona como sujeto) es el FUNDAMENTO último: el valor del trabajo no depende de qué se produce, sino de la dignidad de quien lo realiza."
+    q:"¿Cuál es la dimensión fundamental del trabajo y por qué?",
+    opts:["La objetiva: depende de lo que se produce","Son iguales en importancia","La subjetiva: depende de la persona que trabaja, no del tipo de actividad","La objetiva: incluye los instrumentos y técnicas"],
+    ans:2, exp:"La dimensión subjetiva (la persona como sujeto) es el FUNDAMENTO: el valor del trabajo no depende de qué se produce, sino de la dignidad de quien lo realiza."
   },
   {
     id:14, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"test",
     q:"¿Cuál es el principio central sobre la dignidad del trabajo en la DSI?",
-    nota:null,
-    opts:[
-      "El hombre es para el trabajo: debe maximizar la producción",
-      "El trabajo es para el hombre, no el hombre para el trabajo; el trabajador nunca es una mercancía",
-      "El capital tiene prioridad sobre el trabajador en la empresa",
-      "El trabajo solo tiene valor si produce riqueza"
-    ], ans:1,
-    exp:"El trabajo es PARA el hombre. El trabajador nunca es una mercancía. La DSI exige: primacía del trabajador sobre el capital, remuneración justa y derecho al descanso."
+    opts:["El hombre es para el trabajo: debe maximizar la producción","El trabajo es para el hombre, no el hombre para el trabajo; el trabajador nunca es una mercancía","El capital tiene prioridad sobre el trabajador","El trabajo solo tiene valor si produce riqueza"],
+    ans:1, exp:"El trabajo es PARA el hombre. El trabajador nunca es una mercancía. La DSI exige: primacía del trabajador sobre el capital, remuneración justa y derecho al descanso."
   },
   {
     id:15, block:3, blockName:"Bloque 3 — Social", color:"#059669", type:"test",
     q:"¿Quién acuñó el término 'deontología' y qué incluye un código deontológico?",
-    nota:null,
-    opts:[
-      "Aristóteles; incluye virtudes morales",
-      "Kant; incluye imperativos categóricos",
-      "Jeremy Bentham; incluye normas de actuación, sistema de quejas, tipificación de infracciones y sanciones",
-      "Marx; incluye derechos de los trabajadores"
-    ], ans:2,
-    exp:"Jeremy Bentham acuñó el término. Un código deontológico regula deberes profesionales: normas, quejas, infracciones y sanciones. Complementa (no sustituye) la legislación."
+    opts:["Aristóteles; incluye virtudes morales","Kant; incluye imperativos categóricos","Jeremy Bentham; incluye normas de actuación, sistema de quejas, tipificación de infracciones y sanciones","Marx; incluye derechos de los trabajadores"],
+    ans:2, exp:"Jeremy Bentham acuñó el término. Un código deontológico regula deberes profesionales: normas, quejas, infracciones y sanciones. Complementa la legislación."
   }
 ];
 
 // ── STATE ──────────────────────────────────────────────────────────────────────
-let deck = [];
-let completed = [];
-let totalFails = 0;
-let totalPasses = 0;
-let devRevealed = false;
+let deck = [], completed = [], totalFails = 0, totalPasses = 0;
 
 // ── INIT ───────────────────────────────────────────────────────────────────────
 function startDeck() {
   deck = shuffle([...CARDS]);
-  completed = [];
-  totalFails = 0;
-  totalPasses = 0;
+  completed = []; totalFails = 0; totalPasses = 0;
   document.getElementById('start-screen').style.display = 'none';
   document.getElementById('game').style.display = 'flex';
-  updateProgress();
-  renderCard();
+  updateProgress(); renderCard();
 }
-
 function restartDeck() {
   document.getElementById('end-screen').classList.remove('visible');
   document.getElementById('start-screen').style.display = 'flex';
 }
-
 function shuffle(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
+  for (let i = arr.length-1; i>0; i--) { const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; }
   return arr;
 }
 
-// ── RENDER ─────────────────────────────────────────────────────────────────────
-function renderCard(animation) {
-  if (deck.length === 0) { showEnd(); return; }
+// ── RENDER ──────────────────────────────────────────────────────────────────────
+function renderCard(anim) {
+  if (!deck.length) { showEnd(); return; }
   const card = document.getElementById('main-card');
-  devRevealed = false;
-
-  if (animation) {
-    card.classList.add(animation);
-    setTimeout(() => {
-      card.classList.remove(animation);
-      _paintCard(card);
-      card.classList.add('enter');
-      setTimeout(() => card.classList.remove('enter'), 300);
-    }, 300);
+  if (anim) {
+    card.classList.add(anim);
+    setTimeout(() => { card.classList.remove(anim); _paint(card); card.classList.add('enter'); setTimeout(()=>card.classList.remove('enter'),300); }, 280);
   } else {
-    _paintCard(card);
-    card.classList.add('enter');
-    setTimeout(() => card.classList.remove('enter'), 300);
+    _paint(card); card.classList.add('enter'); setTimeout(()=>card.classList.remove('enter'),300);
   }
-
-  updateDeckCount();
-  updateShadows();
+  updateDeckCount(); updateShadows();
 }
 
-function _paintCard(card) {
+function _paint(card) {
   const c = deck[0];
   card.style.setProperty('--block-color', c.color);
-
+  const nota = c.nota ? `<div class="nota-box">⚠ ${c.nota}</div>` : '';
   if (c.type === 'test') {
-    const letters = ['A','B','C','D'];
-    const notaHtml = c.nota ? `<div class="nota-box">⚠ ${c.nota}</div>` : '';
+    const L = ['A','B','C','D'];
     card.innerHTML = `
       <div class="card-badge"><div class="badge-dot"></div>${c.blockName}</div>
-      ${notaHtml}
+      ${nota}
       <div class="card-q">${c.q}</div>
       <div class="options">
-        ${c.opts.map((o,i) => `
-          <button class="opt" id="opt-${i}" onclick="answerTest(${i})">
-            <span class="opt-l">${letters[i]}</span>${o}
-          </button>`).join('')}
+        ${c.opts.map((o,i)=>`<button class="opt" id="opt-${i}" onclick="answerTest(${i})"><span class="opt-l">${L[i]}</span>${o}</button>`).join('')}
       </div>
       <div class="feedback" id="fb"></div>`;
   } else {
-    const notaHtml = c.nota ? `<div class="nota-box">⚠ ${c.nota}</div>` : '';
     card.innerHTML = `
       <div class="card-badge"><div class="badge-dot"></div>${c.blockName} · DESARROLLO</div>
-      ${notaHtml}
+      ${nota}
       <div class="card-q">${c.q}</div>
       <div class="dev-hint">${c.hint}</div>
-      <button class="btn-reveal" id="btn-rev" onclick="revealDev()">Ver respuesta</button>
-      <div class="dev-answer-box" id="dev-ans">${c.answer}</div>
-      <div id="rating-wrap" style="display:none">
-        <div class="rating-label">¿Lo sabías antes de ver la respuesta?</div>
-        <div class="rating-row">
-          <button class="rbtn green visible" onclick="rateDev('ok')">Lo sabía</button>
-          <button class="rbtn yellow visible" onclick="rateDev('mid')">A medias</button>
-          <button class="rbtn red visible" onclick="rateDev('no')">No lo sabía</button>
-        </div>
-      </div>`;
+      <textarea class="dev-textarea" id="dev-ta" placeholder="Escribe aquí tu respuesta con tus propias palabras..."></textarea>
+      <button class="btn-corregir" id="btn-cor" onclick="correctDev()">Corregir mi respuesta</button>
+      <div class="correction-result" id="corr-result"></div>`;
+    // auto-enable button only when there's text
+    setTimeout(() => {
+      const ta = document.getElementById('dev-ta');
+      const btn = document.getElementById('btn-cor');
+      if (ta && btn) {
+        btn.disabled = true;
+        ta.addEventListener('input', () => { btn.disabled = ta.value.trim().length < 10; });
+      }
+    }, 50);
   }
 }
 
-// ── TEST LOGIC ──────────────────────────────────────────────────────────────────
+// ── TEST ────────────────────────────────────────────────────────────────────────
 function answerTest(idx) {
   const c = deck[0];
-  const correct = idx === c.ans;
-  const letters = ['A','B','C','D'];
-
-  c.opts.forEach((_, i) => {
-    const btn = document.getElementById('opt-' + i);
+  const ok = idx === c.ans;
+  ['A','B','C','D'].forEach((_,i) => {
+    const btn = document.getElementById('opt-'+i);
     btn.disabled = true;
     if (i === c.ans) btn.classList.add('correct');
-    else if (i === idx && !correct) btn.classList.add('wrong');
+    else if (i === idx && !ok) btn.classList.add('wrong');
   });
-
   const fb = document.getElementById('fb');
-  if (correct) {
-    fb.className = 'feedback ok';
-    fb.textContent = '✓  ' + c.exp;
-    setTimeout(() => markCorrect(), 1400);
+  if (ok) {
+    fb.className = 'feedback ok'; fb.textContent = '✓  ' + c.exp;
+    setTimeout(markCorrect, 1400);
   } else {
     totalFails++;
-    fb.className = 'feedback fail';
-    fb.textContent = '✗  ' + c.exp;
-    const card = document.getElementById('main-card');
-    card.classList.add('shake');
-    setTimeout(() => card.classList.remove('shake'), 400);
-    setTimeout(() => sendToBack(), 1800);
+    fb.className = 'feedback fail'; fb.textContent = '✗  ' + c.exp;
+    document.getElementById('main-card').classList.add('shake');
+    setTimeout(()=>document.getElementById('main-card').classList.remove('shake'), 400);
+    setTimeout(sendToBack, 1800);
   }
 }
 
-// ── DEV LOGIC ───────────────────────────────────────────────────────────────────
-function revealDev() {
-  devRevealed = true;
-  document.getElementById('btn-rev').style.display = 'none';
-  document.getElementById('dev-ans').classList.add('visible');
-  document.getElementById('rating-wrap').style.display = 'block';
+// ── DEV CORRECTION ─────────────────────────────────────────────────────────────
+function correctDev() {
+  const c = deck[0];
+  const userText = document.getElementById('dev-ta').value;
+  document.getElementById('btn-cor').disabled = true;
+  document.getElementById('dev-ta').disabled = true;
+
+  const results = c.concepts.map(concept => ({
+    ...concept,
+    hit: hasKw(userText, concept.kws)
+  }));
+
+  const hits = results.filter(r => r.hit).length;
+  const total = results.length;
+  const pct = Math.round((hits / total) * 100);
+  const level = pct >= 75 ? 'great' : pct >= 50 ? 'ok' : 'bad';
+  const msgs = {
+    great: { title: '¡Muy bien!', sub: 'Has cubierto los conceptos principales.' },
+    ok:    { title: 'Mejorable', sub: 'Te han faltado algunos conceptos clave.' },
+    bad:   { title: 'Necesitas repasar', sub: 'Faltan bastantes conceptos importantes.' }
+  };
+
+  const conceptsHtml = results.map(r => `
+    <li class="concept-item ${r.hit ? 'hit' : 'miss'}">
+      <span class="ci-icon">${r.hit ? '✓' : '✗'}</span>
+      <div>
+        <div class="ci-name">${r.name}</div>
+        ${!r.hit ? `<div class="ci-kw">Debías mencionar: ${r.hint}</div>` : ''}
+      </div>
+    </li>`).join('');
+
+  const modelId = 'model-' + c.id;
+  const resultHtml = `
+    <div class="score-header ${level}">
+      <div class="score-circle ${level}">
+        <span class="sc-n">${hits}/${total}</span>
+        <span class="sc-d">${pct}%</span>
+      </div>
+      <div class="score-info">
+        <div class="si-title">${msgs[level].title}</div>
+        <div class="si-sub">${msgs[level].sub}</div>
+      </div>
+    </div>
+    <ul class="concept-list">${conceptsHtml}</ul>
+    <button class="model-toggle" onclick="toggleModel('${modelId}')">
+      <span>Ver respuesta modelo</span><span id="arr-${modelId}">▼</span>
+    </button>
+    <div class="model-answer-box" id="${modelId}">${c.answer}</div>
+    <div class="result-actions">
+      <button class="btn-pass-ok" onclick="markCorrect()">Superada ✓</button>
+      <button class="btn-retry" onclick="sendToBack()">Volver al mazo ↩</button>
+    </div>`;
+
+  const box = document.getElementById('corr-result');
+  box.innerHTML = resultHtml;
+  box.classList.add('visible');
+
+  if (level === 'bad') totalFails++;
+
+  // scroll the card into view smoothly
+  setTimeout(() => box.scrollIntoView({ behavior:'smooth', block:'nearest' }), 100);
 }
 
-function rateDev(r) {
-  if (r === 'ok') {
-    markCorrect();
-  } else {
-    if (r === 'no') totalFails++;
-    sendToBack();
-  }
+function toggleModel(id) {
+  const box = document.getElementById(id);
+  const arr = document.getElementById('arr-' + id);
+  const open = box.classList.toggle('visible');
+  arr.textContent = open ? '▲' : '▼';
 }
 
 // ── DECK ACTIONS ────────────────────────────────────────────────────────────────
@@ -681,14 +600,11 @@ function markCorrect() {
   updateProgress();
   renderCard('exit-left');
 }
-
 function sendToBack() {
   const card = deck.shift();
-  const pos = Math.min(3, deck.length);
-  deck.splice(pos, 0, card);
+  deck.splice(Math.min(3, deck.length), 0, card);
   renderCard('exit-right');
 }
-
 function skipCard() {
   totalPasses++;
   sendToBack();
@@ -696,30 +612,24 @@ function skipCard() {
 
 // ── UI ──────────────────────────────────────────────────────────────────────────
 function updateProgress() {
-  const total = CARDS.length;
-  const done = completed.length;
-  const pct = Math.round((done / total) * 100);
+  const total = CARDS.length, done = completed.length, pct = Math.round(done/total*100);
   document.getElementById('prog-fill').style.width = pct + '%';
   document.getElementById('prog-label').textContent = `${done} de ${total} completadas`;
   document.getElementById('prog-pct').textContent = pct + '%';
   document.getElementById('hdr-done').textContent = done;
   document.getElementById('hdr-left').textContent = deck.length;
 }
-
 function updateDeckCount() {
   const n = deck.length;
-  document.getElementById('deck-count-txt').textContent = n === 1 ? '1 tarjeta en el mazo' : `${n} tarjetas en el mazo`;
+  document.getElementById('deck-count-txt').textContent = n === 1 ? '1 tarjeta' : `${n} tarjetas`;
 }
-
 function updateShadows() {
   document.getElementById('shadow1').style.display = deck.length > 1 ? 'block' : 'none';
   document.getElementById('shadow2').style.display = deck.length > 2 ? 'block' : 'none';
 }
-
 function showEnd() {
   document.getElementById('game').style.display = 'none';
-  const es = document.getElementById('end-screen');
-  es.classList.add('visible');
+  const es = document.getElementById('end-screen'); es.classList.add('visible');
   document.getElementById('end-done').textContent = CARDS.length;
   document.getElementById('end-fails').textContent = totalFails;
   document.getElementById('end-passes').textContent = totalPasses;
